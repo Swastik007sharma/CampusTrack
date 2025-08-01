@@ -147,15 +147,15 @@ function Messages() {
   if (!user) return <Loader />;
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 bg-gray-50 min-h-screen flex flex-col">
+    <div style={{ background: 'var(--color-bg)', color: 'var(--color-text)', minHeight: '100vh' }}>
       <div className="max-w-3xl mx-auto flex-1 w-full">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Messages</h1>
+        <h1 className="text-3xl font-bold mb-6" style={{ color: 'var(--color-text)' }}>Messages</h1>
         {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md shadow-md">
+          <div className="mb-4 p-3 rounded-md shadow-md" style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}>
             {error}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="mb-6 bg-white p-6 rounded-lg shadow-lg">
+        <form onSubmit={handleSubmit} className="mb-6 p-6 rounded-lg shadow-lg" style={{ background: 'var(--color-secondary)' }}>
           <Input
             label="Message"
             name="content"
@@ -164,19 +164,29 @@ function Messages() {
             as="textarea"
             rows="4"
             required
-            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500"
+            style={{ 
+              border: '1px solid var(--color-secondary)', 
+              background: 'var(--color-bg)', 
+              color: 'var(--color-text)' 
+            }}
             disabled={loading}
           />
           <Button
             type="submit"
             disabled={loading || !newMessage.content.trim()}
-            className={`w-full mt-4 bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 
-              disabled:bg-gray-400 disabled:cursor-not-allowed transition duration-200`}
+            className={`w-full mt-4 p-3 rounded-md transition duration-200 ${
+              loading || !newMessage.content.trim() ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            style={{ 
+              background: loading || !newMessage.content.trim() ? 'var(--color-secondary)' : 'var(--color-primary)',
+              color: 'var(--color-bg)'
+            }}
           >
             {loading ? 'Sending...' : 'Send Message'}
           </Button>
         </form>
-        <div className="flex-1 overflow-y-auto max-h-[calc(100vh-300px)] bg-white p-4 rounded-lg shadow-lg">
+        <div className="flex-1 overflow-y-auto max-h-[calc(100vh-300px)] p-4 rounded-lg shadow-lg" style={{ background: 'var(--color-secondary)' }}>
           {loading && messages.length === 0 ? (
             <Loader className="text-blue-600" />
           ) : messages.length > 0 ? (
@@ -190,11 +200,15 @@ function Messages() {
                   >
                     <div
                       className={`max-w-[70%] p-3 rounded-lg shadow-md ${
-                        isCurrentUser ? 'bg-blue-100 text-blue-900' : 'bg-gray-100 text-gray-900'
+                        isCurrentUser ? 'text-blue-900' : 'text-gray-900'
                       }`}
+                      style={{
+                        background: isCurrentUser ? 'var(--color-primary)' : 'var(--color-bg)',
+                        color: isCurrentUser ? 'var(--color-bg)' : 'var(--color-text)'
+                      }}
                     >
                       <div className="flex items-center mb-1">
-                        <span className="w-8 h-8 bg-gray-300 text-white rounded-full flex items-center justify-center mr-2">
+                        <span className="w-8 h-8 text-white rounded-full flex items-center justify-center mr-2" style={{ background: 'var(--color-accent)' }}>
                           {getSenderInitial(msg.sender)}
                         </span>
                         <p className="text-sm font-medium">
@@ -202,7 +216,7 @@ function Messages() {
                         </p>
                       </div>
                       <p className="text-sm mt-1">{msg.content || 'No content'}</p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs mt-1" style={{ color: isCurrentUser ? 'var(--color-bg)' : 'var(--color-text)' }}>
                         {new Date(msg.createdAt).toLocaleString('en-US', {
                           year: 'numeric',
                           month: 'short',
@@ -219,7 +233,7 @@ function Messages() {
               <div ref={messagesEndRef} />
             </div>
           ) : (
-            <p className="text-gray-600 text-lg text-center py-10">No messages found.</p>
+            <p className="text-lg text-center py-10" style={{ color: 'var(--color-text)' }}>No messages found.</p>
           )}
         </div>
       </div>

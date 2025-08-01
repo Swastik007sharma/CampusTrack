@@ -1,5 +1,5 @@
 function NotFound() {
-  return <div className="container mx-auto p-4 text-center">404 - Page Not Found</div>;
+  return <div style={{ background: 'var(--color-bg)', color: 'var(--color-text)', minHeight: '100vh', textAlign: 'center', padding: '2rem' }}>404 - Page Not Found</div>;
 }
 
 export default NotFound;

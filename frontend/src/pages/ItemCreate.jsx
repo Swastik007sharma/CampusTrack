@@ -103,13 +103,13 @@ function ItemCreate() {
   };
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8 xl:p-10 bg-gray-50 min-h-screen">
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8 xl:p-10 min-h-screen" style={{ background: 'var(--color-bg)' }}>
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-gray-800 text-center">Add New Item</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center" style={{ color: 'var(--color-text)' }}>Add New Item</h1>
 
-        <form onSubmit={handleSubmit} className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md" encType="multipart/form-data">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8 rounded-lg shadow-md" encType="multipart/form-data" style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}>
           <div className="mb-4">
-            <label htmlFor="title" className="block text-sm sm:text-base md:text-lg font-medium text-gray-700 mb-1">
+            <label htmlFor="title" className="block text-sm sm:text-base md:text-lg font-medium mb-1" style={{ color: 'var(--color-text)' }}>
               Title
             </label>
             <input
@@ -119,12 +119,17 @@ function ItemCreate() {
               value={formData.title}
               onChange={handleChange}
               className="w-full p-2 sm:p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="description" className="block text-sm sm:text-base md:text-lg font-medium text-gray-700 mb-1">
+            <label htmlFor="description" className="block text-sm sm:text-base md:text-lg font-medium mb-1" style={{ color: 'var(--color-text)' }}>
               Description
             </label>
             <textarea
@@ -133,13 +138,18 @@ function ItemCreate() {
               value={formData.description}
               onChange={handleChange}
               className="w-full p-2 sm:p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               rows="4"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="category" className="block text-sm sm:text-base md:text-lg font-medium text-gray-700 mb-1">
+            <label htmlFor="category" className="block text-sm sm:text-base md:text-lg font-medium mb-1" style={{ color: 'var(--color-text)' }}>
               Category
             </label>
             <select
@@ -148,6 +158,11 @@ function ItemCreate() {
               value={formData.category}
               onChange={handleChange}
               className="w-full p-2 sm:p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               required
             >
               <option value="">Select a category</option>
@@ -160,7 +175,7 @@ function ItemCreate() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="status" className="block text-sm sm:text-base md:text-lg font-medium text-gray-700 mb-1">
+            <label htmlFor="status" className="block text-sm sm:text-base md:text-lg font-medium mb-1" style={{ color: 'var(--color-text)' }}>
               Status
             </label>
             <select
@@ -169,6 +184,11 @@ function ItemCreate() {
               value={formData.status}
               onChange={handleChange}
               className="w-full p-2 sm:p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               required
             >
               <option value="Lost">Lost</option>
@@ -177,7 +197,7 @@ function ItemCreate() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="location" className="block text-sm sm:text-base md:text-lg font-medium text-gray-700 mb-1">
+            <label htmlFor="location" className="block text-sm sm:text-base md:text-lg font-medium mb-1" style={{ color: 'var(--color-text)' }}>
               Location
             </label>
             <input
@@ -187,13 +207,18 @@ function ItemCreate() {
               value={formData.location}
               onChange={handleChange}
               className="w-full p-2 sm:p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               placeholder="e.g., Main Hall, Room 101"
               required
             />
           </div>
 
           <div className="mb-6">
-            <label htmlFor="image" className="block text-sm sm:text-base md:text-lg font-medium text-gray-700 mb-1">
+            <label htmlFor="image" className="block text-sm sm:text-base md:text-lg font-medium mb-1" style={{ color: 'var(--color-text)' }}>
               Image (optional)
             </label>
             <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -204,6 +229,11 @@ function ItemCreate() {
                 accept="image/*"
                 onChange={handleImageChange}
                 className="w-full sm:w-auto p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                style={{ 
+                  border: '1px solid var(--color-secondary)', 
+                  background: 'var(--color-bg)', 
+                  color: 'var(--color-text)' 
+                }}
               />
               {imagePreview && (
                 <div className="mt-2 sm:mt-0">

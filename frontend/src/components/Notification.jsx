@@ -1,8 +1,8 @@
 function Notification({ notification }) {
   return (
-    <div className="p-2 bg-gray-50 border-b">
+    <div className="p-2 border-b" style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}>
       <p>{notification.message}</p>
-      <span className="text-sm text-gray-500">{new Date(notification.createdAt).toLocaleString()}</span>
+      <span className="text-sm" style={{ color: 'var(--color-accent)' }}>{new Date(notification.createdAt).toLocaleString()}</span>
     </div>
   );
 }

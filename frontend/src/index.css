@@ -1,3 +1,28 @@
+:root {
+  --color-bg: #f9fafb;
+  --color-text: #1a202c;
+  --color-primary: #2563eb;
+  --color-secondary: #f3f4f6;
+  --color-accent: #6366f1;
+  --color-navbar: #2563eb;
+  --color-sidebar: #f3f4f6;
+}
+
+.dark {
+  --color-bg: #18181b;
+  --color-text: #f3f4f6;
+  --color-primary: #6366f1;
+  --color-secondary: #27272a;
+  --color-accent: #a5b4fc;
+  --color-navbar: #18181b;
+  --color-sidebar: #27272a;
+}
+
+body, html {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
 @import "tailwindcss";
 
 @tailwind utilities;

@@ -18,8 +18,9 @@ const ItemCard = ({
   setOtp,           // Function to update OTP
 }) => {
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden w-full relative">
-      <div className="relative w-full h-48 sm:h-56 md:h-64 bg-gray-100 rounded-t-xl overflow-hidden">
+    <div className="rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden w-full relative"
+      style={{ background: 'var(--color-secondary)', border: '1px solid var(--color-secondary)', color: 'var(--color-text)' }}>
+      <div className="relative w-full h-48 sm:h-56 md:h-64 rounded-t-xl overflow-hidden" style={{ background: 'var(--color-bg)' }}>
         {item.image ? (
           <img
             src={item.image}
@@ -28,7 +29,7 @@ const ItemCard = ({
             onClick={() => window.open(item.image, '_blank')}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm sm:text-base">
+          <div className="w-full h-full flex items-center justify-center text-sm sm:text-base" style={{ color: 'var(--color-text)' }}>
             No Image Available
           </div>
         )}
@@ -36,14 +37,16 @@ const ItemCard = ({
           <div className="absolute top-2 right-2 flex gap-2">
             <button
               onClick={onEdit}
-              className="text-blue-600 hover:text-blue-800 p-2 rounded-full bg-white bg-opacity-80 hover:bg-opacity-100 transition-colors"
+              className="p-2 rounded-full"
+              style={{ background: 'var(--color-bg)', color: 'var(--color-primary)' }}
               aria-label="Edit item"
             >
               <FaEdit size={16} />
             </button>
             <button
               onClick={onDelete}
-              className="text-red-600 hover:text-red-800 p-2 rounded-full bg-white bg-opacity-80 hover:bg-opacity-100 transition-colors"
+              className="p-2 rounded-full"
+              style={{ background: 'var(--color-bg)', color: 'var(--color-accent)' }}
               aria-label="Delete item"
             >
               <FaTrash size={16} />
@@ -60,21 +63,36 @@ const ItemCard = ({
               name="title"
               value={editFormData.title}
               onChange={onEditChange}
-              className="w-full p-2 border border-gray-300 rounded-md text-sm sm:text-base"
+              className="w-full p-2 border rounded-md text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               required
             />
             <textarea
               name="description"
               value={editFormData.description}
               onChange={onEditChange}
-              className="w-full p-2 border border-gray-300 rounded-md text-sm sm:text-base h-20"
+              className="w-full p-2 border rounded-md text-sm sm:text-base h-20"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               required
             />
             <select
               name="status"
               value={editFormData.status}
               onChange={onEditChange}
-              className="w-full p-2 border border-gray-300 rounded-md text-sm sm:text-base"
+              className="w-full p-2 border rounded-md text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               required
             >
               <option value="Lost">Lost</option>
@@ -87,7 +105,12 @@ const ItemCard = ({
               name="category"
               value={editFormData.category}
               onChange={onEditChange}
-              className="w-full p-2 border border-gray-300 rounded-md text-sm sm:text-base"
+              className="w-full p-2 border rounded-md text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               required
             />
             <input
@@ -95,25 +118,37 @@ const ItemCard = ({
               name="location"
               value={editFormData.location}
               onChange={onEditChange}
-              className="w-full p-2 border border-gray-300 rounded-md text-sm sm:text-base"
+              className="w-full p-2 border rounded-md text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
               required
             />
             <input
               type="file"
               name="image"
               onChange={onEditChange}
-              className="w-full p-2 border border-gray-300 rounded-md text-sm sm:text-base"
+              className="w-full p-2 border rounded-md text-sm sm:text-base"
+              style={{ 
+                border: '1px solid var(--color-secondary)', 
+                background: 'var(--color-bg)', 
+                color: 'var(--color-text)' 
+              }}
             />
             <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={onEditSubmit}
-                className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition-colors text-sm"
+                className="px-3 py-1 rounded-md transition-colors text-sm"
+                style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
               >
                 Save
               </button>
               <button
                 onClick={onCancelEdit}
-                className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600 transition-colors text-sm"
+                className="px-3 py-1 rounded-md transition-colors text-sm"
+                style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}
               >
                 Cancel
               </button>
@@ -122,27 +157,28 @@ const ItemCard = ({
         </div>
       ) : (
         <div className="p-4 sm:p-5">
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+          <h3 className="text-lg sm:text-xl font-semibold mb-2 line-clamp-2" style={{ color: 'var(--color-text)' }}>
             {item.title}
           </h3>
-          <div className="text-sm sm:text-base text-gray-600 space-y-2 mb-4">
+          <div className="text-sm sm:text-base space-y-2 mb-4" style={{ color: 'var(--color-text)' }}>
             <p>
-              <span className="font-medium text-gray-800">Status:</span>{' '}
+              <span className="font-medium" style={{ color: 'var(--color-text)' }}>Status:</span>{' '}
               <span className="capitalize">{item.status}</span>
             </p>
             <p>
-              <span className="font-medium text-gray-800">Category:</span>{' '}
+              <span className="font-medium" style={{ color: 'var(--color-text)' }}>Category:</span>{' '}
               {item.category?.name || 'N/A'}
             </p>
             <p>
-              <span className="font-medium text-gray-800">Posted On:</span>{' '}
+              <span className="font-medium" style={{ color: 'var(--color-text)' }}>Posted On:</span>{' '}
               {new Date(item.createdAt).toLocaleDateString()}
             </p>
           </div>
           <div className="mt-4 flex flex-col gap-2">
             <Link
               to={`/items/${item._id}`}
-              className="text-sm sm:text-base text-blue-600 hover:text-blue-800 font-medium underline underline-offset-2 transition-colors text-right"
+              className="text-sm sm:text-base font-medium underline underline-offset-2 transition-colors text-right"
+              style={{ color: 'var(--color-primary)' }}
             >
               View Details
             </Link>
@@ -150,7 +186,8 @@ const ItemCard = ({
               <div className="flex flex-col gap-2">
                 <button
                   onClick={onGenerateOTP}
-                  className="bg-indigo-500 text-white px-3 py-1 rounded-md hover:bg-indigo-600 transition-colors text-sm w-full"
+                  className="px-3 py-1 rounded-md transition-colors text-sm w-full"
+                  style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                 >
                   Generate OTP
                 </button>
@@ -161,11 +198,17 @@ const ItemCard = ({
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
                       placeholder="Enter OTP"
-                      className="w-full p-2 border border-gray-300 rounded-md text-sm"
+                      className="w-full p-2 border rounded-md text-sm"
+                      style={{ 
+                        border: '1px solid var(--color-secondary)', 
+                        background: 'var(--color-bg)', 
+                        color: 'var(--color-text)' 
+                      }}
                     />
                     <button
                       onClick={onVerifyOTP}
-                      className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600 transition-colors text-sm"
+                      className="px-3 py-1 rounded-md transition-colors text-sm"
+                      style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                     >
                       Verify
                     </button>

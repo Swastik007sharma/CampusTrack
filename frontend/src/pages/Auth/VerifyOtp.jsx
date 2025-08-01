@@ -99,22 +99,22 @@ function VerifyOtp() {
   if (!email) return <Loader />;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in-down">
-      <div className="w-full max-w-md bg-white/90 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100 transform transition-all duration-500 hover:shadow-2xl">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6 animate-fade-in-down">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 animate-fade-in-down" style={{ background: 'var(--color-bg)' }}>
+      <div className="w-full max-w-md p-8 rounded-xl shadow-lg border transform transition-all duration-500 hover:shadow-2xl" style={{ background: 'var(--color-secondary)', color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>
+        <h2 className="text-3xl font-bold text-center mb-6 animate-fade-in-down" style={{ color: 'var(--color-text)' }}>
           {isForgot ? 'Verify OTP & Reset Password' : 'Verify OTP'}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="animate-fade-in-left" style={{ animationDelay: '0.1s' }}>
-            <label htmlFor="otp" className="block text-sm font-medium text-gray-700">OTP</label>
+            <label htmlFor="otp" className="block text-sm font-medium" style={{ color: 'var(--color-text)' }}>OTP</label>
             <Input
               id="otp"
               type="text"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               placeholder="Enter 6-digit OTP"
-              className="mt-2 w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50"
+              className="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50"
               disabled={loading}
               aria-label="Enter OTP"
             />
@@ -122,21 +122,22 @@ function VerifyOtp() {
           {isForgot && (
             <>
               <div className="relative animate-fade-in-left" style={{ animationDelay: '0.2s' }}>
-                <label htmlFor="new-password" className="block text-sm font-medium text-gray-700">New Password</label>
+                <label htmlFor="new-password" className="block text-sm font-medium" style={{ color: 'var(--color-text)' }}>New Password</label>
                 <Input
                   id="new-password"
                   type={showNewPassword ? 'text' : 'password'}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Enter new password"
-                  className="mt-2 w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50 pr-12"
+                  className="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50 pr-12"
                   disabled={loading}
                   aria-label="Enter new password"
                 />
                 <button
                   type="button"
                   onClick={toggleNewPasswordVisibility}
-                  className="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-full text-gray-500 hover:text-gray-700 focus:outline-none mt-4"
+                  className="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-full focus:outline-none mt-4"
+                  style={{ color: 'var(--color-accent)' }}
                   disabled={loading}
                   aria-label="Toggle new password visibility"
                 >
@@ -144,21 +145,22 @@ function VerifyOtp() {
                 </button>
               </div>
               <div className="relative animate-fade-in-left" style={{ animationDelay: '0.3s' }}>
-                <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+                <label htmlFor="confirm-password" className="block text-sm font-medium" style={{ color: 'var(--color-text)' }}>Confirm Password</label>
                 <Input
                   id="confirm-password"
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm new password"
-                  className="mt-2 w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50 pr-12"
+                  className="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50 pr-12"
                   disabled={loading}
                   aria-label="Confirm new password"
                 />
                 <button
                   type="button"
                   onClick={toggleConfirmPasswordVisibility}
-                  className="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-full text-gray-500 hover:text-gray-700 focus:outline-none mt-4"
+                  className="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-full focus:outline-none mt-4"
+                  style={{ color: 'var(--color-accent)' }}
                   disabled={loading}
                   aria-label="Toggle confirm password visibility"
                 >
@@ -189,8 +191,8 @@ function VerifyOtp() {
             </Button>
           </div>
         </form>
-        <p className="mt-4 text-sm text-center text-gray-600 animate-fade-in-left" style={{ animationDelay: '0.5s' }}>
-          Didn’t receive an OTP?{' '}
+        <p className="mt-4 text-sm text-center animate-fade-in-left" style={{ animationDelay: '0.5s', color: 'var(--color-text)' }}>
+          Didn't receive an OTP?{' '}
           <button
             onClick={handleResendOtp}
             className="text-blue-600 hover:text-blue-800 font-medium underline transition-colors duration-200"

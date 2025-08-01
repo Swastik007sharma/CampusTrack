@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { FaUser, FaSignOutAlt, FaHome, FaBell, FaPlus, FaComments, FaBars, FaTimes, FaTachometerAlt, FaShieldAlt } from 'react-icons/fa';
+import ThemeToggle from './common/ThemeToggle';
 
 function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -32,6 +33,13 @@ function Navbar() {
     navigate('/login');
   };
 
+  const handleGuestLogin = () => {
+    // Simulate guest login (customize as needed)
+    localStorage.setItem('token', 'guest-token');
+    localStorage.setItem('user', JSON.stringify({ name: 'Guest', email: 'guest@example.com', role: 'guest' }));
+    window.location.reload();
+  };
+
   const getInitial = () => user?.name?.charAt(0).toUpperCase() || 'U';
   const isAdmin = user?.role === 'admin';
 
@@ -44,7 +52,7 @@ function Navbar() {
   }
 
   return (
-    <nav className="bg-blue-600 text-white p-4 sm:p-4 shadow-lg sticky top-0 z-30">
+    <nav className="bg-navbar text-white p-4 sm:p-4 shadow-lg sticky top-0 z-30" style={{ background: 'var(--color-navbar)' }}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link
           to="/"
@@ -77,6 +85,7 @@ function Navbar() {
                   activeClassName="bg-green-800"
                 />
               )}
+              <ThemeToggle />
               <div ref={profileRef} className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -111,6 +120,12 @@ function Navbar() {
             <>
               <NavLink to="/login" label="Login" active={location.pathname === '/login'} />
               <NavLink to="/register" label="Register" active={location.pathname === '/register'} />
+              <button
+                onClick={handleGuestLogin}
+                className="px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold transition ml-2"
+              >
+                Guest Login
+              </button>
             </>
           )}
         </div>
@@ -130,6 +145,7 @@ function Navbar() {
               <NavLink to="/register" label="Register" active={location.pathname === '/register'} />
             </div>
           )}
+          <ThemeToggle className="ml-2" />
         </div>
       </div>
       {isMobileMenuOpen && token && (
