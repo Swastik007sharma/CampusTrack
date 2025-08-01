@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { FaSearch, FaImage } from "react-icons/fa";
 import {
   getItemDetails,
   claimItem,
@@ -369,8 +370,21 @@ function ItemDetails() {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <p className="text-gray-500 text-sm">No image available</p>
+                  <div className="w-full h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center group hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 ease-in-out">
+                    <div className="flex flex-col items-center space-y-3 p-6 rounded-lg bg-white bg-opacity-80 backdrop-blur-sm shadow-sm group-hover:shadow-md transition-all duration-300">
+                      <div className="relative">
+                        <FaSearch className="text-gray-400 text-4xl group-hover:text-blue-400 transition-colors duration-300" />
+                        <FaImage className="text-gray-300 text-2xl absolute -bottom-1 -right-1 group-hover:text-blue-300 transition-colors duration-300" />
+                      </div>
+                      <div className="text-center">
+                        <p className="text-gray-500 text-sm font-medium group-hover:text-gray-600 transition-colors duration-300">
+                          No Image Available
+                        </p>
+                        <p className="text-gray-400 text-xs mt-1 group-hover:text-gray-500 transition-colors duration-300">
+                          Upload an image to enhance visibility
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
@@ -552,8 +566,21 @@ function ItemDetails() {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center mb-2">
-                    <p className="text-gray-500 text-sm">No image available</p>
+                  <div className="w-full h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center mb-2 group hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 ease-in-out">
+                    <div className="flex flex-col items-center space-y-3 p-6 rounded-lg bg-white bg-opacity-80 backdrop-blur-sm shadow-sm group-hover:shadow-md transition-all duration-300">
+                      <div className="relative">
+                        <FaSearch className="text-gray-400 text-4xl group-hover:text-blue-400 transition-colors duration-300" />
+                        <FaImage className="text-gray-300 text-2xl absolute -bottom-1 -right-1 group-hover:text-blue-300 transition-colors duration-300" />
+                      </div>
+                      <div className="text-center">
+                        <p className="text-gray-500 text-sm font-medium group-hover:text-gray-600 transition-colors duration-300">
+                          No Image Available
+                        </p>
+                        <p className="text-gray-400 text-xs mt-1 group-hover:text-gray-500 transition-colors duration-300">
+                          Select a new image below
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
                 <div className="flex items-center space-x-4">
