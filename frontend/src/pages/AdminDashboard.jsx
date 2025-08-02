@@ -7,6 +7,7 @@ import {
 	useMemo,
 } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import {
 	getDashboardStats,
 	getUsers,
@@ -119,7 +120,7 @@ function UsersTab({ user, page, setPage, totalPages, setTotalPages, limit }) {
 
 	const userSearchSection = useMemo(
 		() => (
-			<div className="mb-6 flex flex-col sm:flex-row gap-4 items-center bg-white p-4 rounded-lg shadow-sm">
+			<div className="mb-6 flex flex-col sm:flex-row gap-4 items-center p-4 rounded-lg shadow-sm" style={{ background: 'var(--color-secondary)' }}>
 				<input
 					type="text"
 					placeholder="Search by name, email, or role..."
@@ -128,7 +129,12 @@ function UsersTab({ user, page, setPage, totalPages, setTotalPages, limit }) {
 						setUserSearch(e.target.value);
 						setPage((prev) => ({ ...prev, users: 1 }));
 					}}
-					className="w-full sm:w-1/3 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					className="w-full sm:w-1/3 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					style={{ 
+						border: '1px solid var(--color-secondary)', 
+						background: 'var(--color-bg)', 
+						color: 'var(--color-text)' 
+					}}
 				/>
 				<select
 					value={userSortBy}
@@ -136,7 +142,12 @@ function UsersTab({ user, page, setPage, totalPages, setTotalPages, limit }) {
 						setUserSortBy(e.target.value);
 						setPage((prev) => ({ ...prev, users: 1 }));
 					}}
-					className="w-full sm:w-1/3 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					className="w-full sm:w-1/3 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					style={{ 
+						border: '1px solid var(--color-secondary)', 
+						background: 'var(--color-bg)', 
+						color: 'var(--color-text)' 
+					}}
 				>
 					<option value="name">Name</option>
 					<option value="email">Email</option>
@@ -148,7 +159,12 @@ function UsersTab({ user, page, setPage, totalPages, setTotalPages, limit }) {
 						setUserOrder(e.target.value);
 						setPage((prev) => ({ ...prev, users: 1 }));
 					}}
-					className="w-full sm:w-1/3 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					className="w-full sm:w-1/3 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					style={{ 
+						border: '1px solid var(--color-secondary)', 
+						background: 'var(--color-bg)', 
+						color: 'var(--color-text)' 
+					}}
 				>
 					<option value="asc">Ascending</option>
 					<option value="desc">Descending</option>
@@ -159,18 +175,18 @@ function UsersTab({ user, page, setPage, totalPages, setTotalPages, limit }) {
 	);
 
 	return (
-		<div className="bg-white p-6 rounded-xl shadow-lg transition-all duration-300">
+		<div className="p-6 rounded-xl shadow-lg transition-all duration-300" style={{ background: 'var(--color-secondary)' }}>
 			{userSearchSection}
-			<h2 className="text-2xl font-semibold text-gray-800 mb-6">Manage Users</h2>
+			<h2 className="text-2xl font-semibold mb-6" style={{ color: 'var(--color-text)' }}>Manage Users</h2>
 			{(success || error) && (
 				<div className="mb-4">
 					{success && (
-						<div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg shadow-md animate-fade-in">
+						<div className="border-l-4 p-4 rounded-lg shadow-md animate-fade-in" style={{ background: 'var(--color-accent)', borderColor: 'var(--color-primary)', color: 'var(--color-bg)' }}>
 							<p className="text-sm font-medium">{success}</p>
 						</div>
 					)}
 					{error && (
-						<div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow-md animate-fade-in">
+						<div className="border-l-4 p-4 rounded-lg shadow-md animate-fade-in" style={{ background: 'var(--color-secondary)', borderColor: 'var(--color-accent)', color: 'var(--color-text)' }}>
 							<p className="text-sm font-medium">{error}</p>
 						</div>
 					)}
@@ -181,31 +197,36 @@ function UsersTab({ user, page, setPage, totalPages, setTotalPages, limit }) {
 			) : (
 				<>
 					<div className="overflow-x-auto rounded-lg shadow-sm">
-						<table className="min-w-full table-auto border-collapse bg-white">
+						<table className="min-w-full table-auto border-collapse" style={{ background: 'var(--color-secondary)' }}>
 							<thead>
-								<tr className="bg-gray-100 text-left text-sm font-semibold text-gray-700">
-									<th className="px-6 py-4 border-b">Name</th>
-									<th className="px-6 py-4 border-b">Email</th>
-									<th className="px-6 py-4 border-b">Role</th>
-									<th className="px-6 py-4 border-b">Status</th>
-									<th className="px-6 py-4 border-b">Actions</th>
+								<tr style={{ background: 'var(--color-bg)' }}>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Name</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Email</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Role</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Status</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
 								{users.map((u) => (
 									<tr
 										key={u._id}
-										className="border-t hover:bg-gray-50 transition-colors duration-200"
+										className="border-t transition-colors duration-200 hover:bg-opacity-50"
+										style={{ borderColor: 'var(--color-secondary)', background: 'var(--color-secondary)' }}
 									>
-										<td className="px-6 py-4 text-sm text-gray-800">{u.name}</td>
-										<td className="px-6 py-4 text-sm text-gray-800">{u.email}</td>
-										<td className="px-6 py-4 text-sm text-gray-800">{u.role}</td>
-										<td className="px-6 py-4 text-sm text-gray-800">
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>{u.name}</td>
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>{u.email}</td>
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>{u.role}</td>
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>
 											<span
 												className={`px-2 py-1 rounded-full text-xs ${u.isActive
-													? "bg-green-100 text-green-700"
-													: "bg-red-100 text-red-700"
+													? ""
+													: ""
 													}`}
+												style={{
+													background: u.isActive ? 'var(--color-accent)' : 'var(--color-secondary)',
+													color: u.isActive ? 'var(--color-bg)' : 'var(--color-text)'
+												}}
 											>
 												{u.isActive ? "Active" : "Inactive"}
 											</span>
@@ -213,19 +234,21 @@ function UsersTab({ user, page, setPage, totalPages, setTotalPages, limit }) {
 										<td className="px-6 py-4 text-sm flex gap-3">
 											<Link
 												to={`../users/${u._id}`}
-												className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors duration-200 shadow-sm"
+												className="px-4 py-2 rounded-lg text-sm transition-colors duration-200 shadow-sm"
+												style={{ background: 'var(--color-primary)', color: 'var(--color-bg)' }}
 											>View</Link>
 											<button
 												onClick={() =>
 													handleToggleUserActivation(u._id, u.isActive)
 												}
-												className={`px-4 py-2 rounded-lg text-sm transition-colors duration-200 shadow-sm ${u.isActive
-													? "bg-red-600 hover:bg-red-700"
-													: "bg-green-600 hover:bg-green-700"
-													} text-white ${u._id === user._id
-														? "opacity-50 cursor-not-allowed"
-														: ""
+												className={`px-4 py-2 rounded-lg text-sm transition-colors duration-200 shadow-sm ${u._id === user._id
+													? "opacity-50 cursor-not-allowed"
+													: ""
 													}`}
+												style={{ 
+													background: u.isActive ? 'var(--color-accent)' : 'var(--color-primary)',
+													color: 'var(--color-bg)'
+												}}
 												disabled={u._id === user._id}
 											>
 												{u.isActive ? "Deactivate" : "Activate"}
@@ -404,7 +427,7 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 
 	const itemSearchSection = useMemo(
 		() => (
-			<div className="mb-6 flex flex-col sm:flex-row gap-4 items-center bg-white p-4 rounded-lg shadow-sm">
+			<div className="mb-6 flex flex-col sm:flex-row gap-4 items-center p-4 rounded-lg shadow-sm" style={{ background: 'var(--color-secondary)' }}>
 				<input
 					type="text"
 					placeholder="Search by title, description, or status..."
@@ -413,7 +436,12 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 						setItemSearch(e.target.value);
 						setPage((prev) => ({ ...prev, items: 1 }));
 					}}
-					className="w-full sm:w-1/3 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					className="w-full sm:w-1/3 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					style={{ 
+						border: '1px solid var(--color-secondary)', 
+						background: 'var(--color-bg)', 
+						color: 'var(--color-text)' 
+					}}
 				/>
 				<select
 					value={itemSortBy}
@@ -421,7 +449,12 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 						setItemSortBy(e.target.value);
 						setPage((prev) => ({ ...prev, items: 1 }));
 					}}
-					className="w-full sm:w-1/3 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					className="w-full sm:w-1/3 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					style={{ 
+						border: '1px solid var(--color-secondary)', 
+						background: 'var(--color-bg)', 
+						color: 'var(--color-text)' 
+					}}
 				>
 					<option value="title">Title</option>
 					<option value="status">Status</option>
@@ -433,7 +466,12 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 						setItemOrder(e.target.value);
 						setPage((prev) => ({ ...prev, items: 1 }));
 					}}
-					className="w-full sm:w-1/3 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					className="w-full sm:w-1/3 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm"
+					style={{ 
+						border: '1px solid var(--color-secondary)', 
+						background: 'var(--color-bg)', 
+						color: 'var(--color-text)' 
+					}}
 				>
 					<option value="asc">Ascending</option>
 					<option value="desc">Descending</option>
@@ -444,18 +482,18 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 	);
 
 	return (
-		<div className="bg-white p-6 rounded-xl shadow-lg transition-all duration-300">
+		<div className="p-6 rounded-xl shadow-lg transition-all duration-300" style={{ background: 'var(--color-secondary)' }}>
 			{itemSearchSection}
-			<h2 className="text-2xl font-semibold text-gray-800 mb-6">Manage Items</h2>
+			<h2 className="text-2xl font-semibold mb-6" style={{ color: 'var(--color-text)' }}>Manage Items</h2>
 			{(success || error) && (
 				<div className="mb-4">
 					{success && (
-						<div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg shadow-md animate-fade-in">
+						<div className="border-l-4 p-4 rounded-lg shadow-md animate-fade-in" style={{ background: 'var(--color-accent)', borderColor: 'var(--color-primary)', color: 'var(--color-bg)' }}>
 							<p className="text-sm font-medium">{success}</p>
 						</div>
 					)}
 					{error && (
-						<div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow-md animate-fade-in">
+						<div className="border-l-4 p-4 rounded-lg shadow-md animate-fade-in" style={{ background: 'var(--color-secondary)', borderColor: 'var(--color-accent)', color: 'var(--color-text)' }}>
 							<p className="text-sm font-medium">{error}</p>
 						</div>
 					)}
@@ -466,53 +504,59 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 			) : (
 				<>
 					<div className="overflow-x-auto rounded-lg shadow-sm">
-						<table className="min-w-full table-auto border-collapse bg-white">
+						<table className="min-w-full table-auto border-collapse" style={{ background: 'var(--color-secondary)' }}>
 							<thead>
-								<tr className="bg-gray-100 text-left text-sm font-semibold text-gray-700">
-									<th className="px-6 py-4 border-b">Title</th>
-									<th className="px-6 py-4 border-b">Status</th>
-									<th className="px-6 py-4 border-b">Posted By</th>
-									<th className="px-6 py-4 border-b">Category</th>
-									<th className="px-6 py-4 border-b">Active Status</th>
-									<th className="px-6 py-4 border-b">Keeper</th>
-									<th className="px-6 py-4 border-b">Claimed By</th>
-									<th className="px-6 py-4 border-b">Actions</th>
+								<tr style={{ background: 'var(--color-bg)' }}>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Title</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Status</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Posted By</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Category</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Active Status</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Keeper</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Claimed By</th>
+									<th className="px-6 py-4 border-b text-left text-sm font-semibold" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
 								{items.map((item) => (
 									<tr
 										key={item._id}
-										className="border-t hover:bg-gray-50 transition-colors duration-200"
+										className="border-t transition-colors duration-200 hover:bg-opacity-50"
+										style={{ borderColor: 'var(--color-secondary)', background: 'var(--color-secondary)' }}
 									>
-										<td className="px-6 py-4 text-sm text-gray-800">{item.title}</td>
-										<td className="px-6 py-4 text-sm text-gray-800">{item.status}</td>
-										<td className="px-6 py-4 text-sm text-gray-800">
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>{item.title}</td>
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>{item.status}</td>
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>
 											{item.postedBy?.name || "Unknown"}
 										</td>
-										<td className="px-6 py-4 text-sm text-gray-800">
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>
 											{item.category?.name || "N/A"}
 										</td>
-										<td className="px-6 py-4 text-sm text-gray-800">
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>
 											<span
 												className={`px-2 py-1 rounded-full text-xs ${item.isActive
-													? "bg-green-100 text-green-700"
-													: "bg-red-100 text-red-700"
+													? ""
+													: ""
 													}`}
+												style={{
+													background: item.isActive ? 'var(--color-accent)' : 'var(--color-secondary)',
+													color: item.isActive ? 'var(--color-bg)' : 'var(--color-text)'
+												}}
 											>
 												{item.isActive ? "Active" : "Inactive"}
 											</span>
 										</td>
-										<td className="px-6 py-4 text-sm text-gray-800">
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>
 											{item.keeperName || "Not Assigned"}
 										</td>
-										<td className="px-6 py-4 text-sm text-gray-800">
+										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>
 											{item.claimedByName || "Not Claimed"}
 										</td>
 										<td className="px-6 py-4 text-sm flex gap-3 flex-wrap">
 											<Link
 												to={`/items/${item._id}`}
-												className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors duration-200 shadow-sm"
+												className="px-4 py-2 rounded-lg text-sm transition-colors duration-200 shadow-sm"
+												style={{ background: 'var(--color-primary)', color: 'var(--color-bg)' }}
 											>
 												View
 											</Link>
@@ -520,17 +564,23 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 												onClick={() =>
 													handleToggleItemActivation(item._id, item.isActive)
 												}
-												className={`px-4 py-2 rounded-lg text-sm transition-colors duration-200 shadow-sm ${item.isActive
-													? "bg-red-600 hover:bg-red-700"
-													: "bg-green-600 hover:bg-green-700"
-													} text-white`}
+												className="px-4 py-2 rounded-lg text-sm transition-colors duration-200 shadow-sm"
+												style={{ 
+													background: item.isActive ? 'var(--color-accent)' : 'var(--color-primary)',
+													color: 'var(--color-bg)'
+												}}
 											>
 												{item.isActive ? "Deactivate" : "Activate"}
 											</button>
 											<select
 												value={selectedKeeperIds[item._id] || ""}
 												onChange={(e) => handleKeeperChange(item._id, e)}
-												className="p-2 border border-gray-200 rounded-lg text-sm"
+												className="p-2 border rounded-lg text-sm"
+												style={{ 
+													border: '1px solid var(--color-secondary)', 
+													background: 'var(--color-bg)', 
+													color: 'var(--color-text)' 
+												}}
 											>
 												<option value="">Select Keeper</option>
 												{keepers.map((k) => (
@@ -541,7 +591,8 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 											</select>
 											<button
 												onClick={() => handleAssignKeeper(item._id)}
-												className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition-colors duration-200 shadow-sm"
+												className="px-4 py-2 rounded-lg text-sm transition-colors duration-200 shadow-sm"
+												style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
 											>
 												Assign Keeper
 											</button>
@@ -567,6 +618,7 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 // Main AdminDashboard Component
 function AdminDashboard() {
 	const { user } = useContext(AuthContext);
+	const { theme } = useTheme();
 	const navigate = useNavigate(); // Added for redirection
 	const [activeTab, setActiveTab] = useState("overview");
 	const [stats, setStats] = useState({});

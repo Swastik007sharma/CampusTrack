@@ -33,12 +33,13 @@ function Navbar() {
     navigate('/login');
   };
 
-  const handleGuestLogin = () => {
-    // Simulate guest login (customize as needed)
-    localStorage.setItem('token', 'guest-token');
-    localStorage.setItem('user', JSON.stringify({ name: 'Guest', email: 'guest@example.com', role: 'guest' }));
-    window.location.reload();
-  };
+  // Guest login functionality removed
+  // const handleGuestLogin = () => {
+  //   // Simulate guest login (customize as needed)
+  //   localStorage.setItem('token', 'guest-token');
+  //   localStorage.setItem('user', JSON.stringify({ name: 'Guest', email: 'guest@example.com', role: 'guest' }));
+  //   window.location.reload();
+  // };
 
   const getInitial = () => user?.name?.charAt(0).toUpperCase() || 'U';
   const isAdmin = user?.role === 'admin';
@@ -85,7 +86,7 @@ function Navbar() {
                   activeClassName="bg-green-800"
                 />
               )}
-              <ThemeToggle />
+              <ThemeToggle className="ml-4" />
               <div ref={profileRef} className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -120,32 +121,38 @@ function Navbar() {
             <>
               <NavLink to="/login" label="Login" active={location.pathname === '/login'} />
               <NavLink to="/register" label="Register" active={location.pathname === '/register'} />
-              <button
-                onClick={handleGuestLogin}
-                className="px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold transition ml-2"
-              >
-                Guest Login
-              </button>
+              <ThemeToggle className="ml-4" />
+              {/* Guest Login button removed */}
             </>
           )}
         </div>
-        <div className="md:hidden flex items-center">
-          {token ? (
-            !isMobileMenuOpen && (
+        <div className="md:hidden flex items-center justify-between w-full">
+          {/* Left side - Hamburger menu for logged in users */}
+          <div className="flex items-center">
+            {token && !isMobileMenuOpen && (
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="focus:outline-none hover:text-blue-200 transition duration-200 ease-in-out hover:scale-105"
+                className="focus:outline-none hover:text-blue-200 transition duration-200 ease-in-out hover:scale-105 p-2"
               >
-                <FaBars className="w-6 h-6" />
+                <FaBars className="w-5 h-5" />
               </button>
-            )
-          ) : (
-            <div className="flex gap-4">
-              <NavLink to="/login" label="Login" active={location.pathname === '/login'} />
-              <NavLink to="/register" label="Register" active={location.pathname === '/register'} />
-            </div>
-          )}
-          <ThemeToggle className="ml-2" />
+            )}
+          </div>
+          
+          {/* Center - Login/Register links for logged out users */}
+          <div className="flex items-center">
+            {!token && (
+              <div className="flex gap-3">
+                <NavLink to="/login" label="Login" active={location.pathname === '/login'} />
+                <NavLink to="/register" label="Register" active={location.pathname === '/register'} />
+              </div>
+            )}
+          </div>
+          
+          {/* Right side - Theme toggle - Always visible */}
+          <div className="flex items-center">
+            <ThemeToggle className="!ml-0 !p-1 !text-lg" />
+          </div>
         </div>
       </div>
       {isMobileMenuOpen && token && (
@@ -196,6 +203,12 @@ function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 />
               )}
+              
+              {/* Theme toggle in mobile menu */}
+              <div className="flex justify-center py-2">
+                <ThemeToggle className="!ml-0 !p-1 !text-lg" />
+              </div>
+              
               <button
                 onClick={handleLogout}
                 className="bg-red-500 text-sm text-white py-2 px-4 rounded-md hover:bg-red-600 hover:text-blue-200 transition duration-200 ease-in-out flex items-center justify-center gap-2 mx-auto hover:scale-105"
