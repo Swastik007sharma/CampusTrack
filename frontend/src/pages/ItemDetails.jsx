@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { FaSearch, FaImage } from "react-icons/fa";
 import {
   getItemDetails,
   claimItem,
@@ -370,8 +371,7 @@ function ItemDetails() {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full h-64 rounded-lg flex items-center justify-center" style={{ background: 'var(--color-bg)' }}>
-                    <p className="text-sm" style={{ color: 'var(--color-text)' }}>No image available</p>
+
                   </div>
                 )}
               </div>
@@ -581,8 +581,7 @@ function ItemDetails() {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full h-64 rounded-lg flex items-center justify-center mb-2" style={{ background: 'var(--color-bg)' }}>
-                    <p className="text-sm" style={{ color: 'var(--color-text)' }}>No image available</p>
+
                   </div>
                 )}
                 <div className="flex items-center space-x-4">

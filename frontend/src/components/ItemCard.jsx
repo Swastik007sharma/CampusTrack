@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaSearch, FaImage } from 'react-icons/fa';
 
 const ItemCard = ({
   item,
@@ -18,35 +18,30 @@ const ItemCard = ({
   setOtp,           // Function to update OTP
 }) => {
   return (
-    <div className="rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden w-full relative"
-      style={{ background: 'var(--color-secondary)', border: '1px solid var(--color-secondary)', color: 'var(--color-text)' }}>
-      <div className="relative w-full h-48 sm:h-56 md:h-64 rounded-t-xl overflow-hidden" style={{ background: 'var(--color-bg)' }}>
+
         {item.image ? (
           <img
             src={item.image}
             alt={item.title}
-            className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+            className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity duration-300"
             onClick={() => window.open(item.image, '_blank')}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-sm sm:text-base" style={{ color: 'var(--color-text)' }}>
-            No Image Available
+
           </div>
         )}
         {showActions && (
           <div className="absolute top-2 right-2 flex gap-2">
             <button
               onClick={onEdit}
-              className="p-2 rounded-full"
-              style={{ background: 'var(--color-bg)', color: 'var(--color-primary)' }}
+
               aria-label="Edit item"
             >
               <FaEdit size={16} />
             </button>
             <button
               onClick={onDelete}
-              className="p-2 rounded-full"
-              style={{ background: 'var(--color-bg)', color: 'var(--color-accent)' }}
+
               aria-label="Delete item"
             >
               <FaTrash size={16} />
@@ -140,15 +135,13 @@ const ItemCard = ({
             <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={onEditSubmit}
-                className="px-3 py-1 rounded-md transition-colors text-sm"
-                style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+
               >
                 Save
               </button>
               <button
                 onClick={onCancelEdit}
-                className="px-3 py-1 rounded-md transition-colors text-sm"
-                style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}
+
               >
                 Cancel
               </button>
@@ -177,17 +170,15 @@ const ItemCard = ({
           <div className="mt-4 flex flex-col gap-2">
             <Link
               to={`/items/${item._id}`}
-              className="text-sm sm:text-base font-medium underline underline-offset-2 transition-colors text-right"
-              style={{ color: 'var(--color-primary)' }}
+
             >
-              View Details
+              View Details →
             </Link>
             {item.status === 'Claimed' && showActions && (
               <div className="flex flex-col gap-2">
                 <button
                   onClick={onGenerateOTP}
-                  className="px-3 py-1 rounded-md transition-colors text-sm w-full"
-                  style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+
                 >
                   Generate OTP
                 </button>
@@ -207,8 +198,7 @@ const ItemCard = ({
                     />
                     <button
                       onClick={onVerifyOTP}
-                      className="px-3 py-1 rounded-md transition-colors text-sm"
-                      style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+
                     >
                       Verify
                     </button>
