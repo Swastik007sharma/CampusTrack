@@ -66,7 +66,7 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 py-12 px-4 sm:px-6 lg:px-8 animate-fade-in-down">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 animate-fade-in-down" style={{ background: 'var(--color-bg)' }}>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -78,37 +78,38 @@ function Login() {
         draggable
         pauseOnHover
       />
-      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg transform transition-all duration-500 hover:shadow-xl">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6 animate-fade-in-down">Login</h2>
+      <div className="w-full max-w-md p-8 rounded-xl shadow-lg transform transition-all duration-500 hover:shadow-xl" style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}>
+        <h2 className="text-3xl font-bold text-center mb-6 animate-fade-in-down" style={{ color: 'var(--color-text)' }}>Login</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="animate-fade-in-left" style={{ animationDelay: '0.1s' }}>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium" style={{ color: 'var(--color-text)' }}>Email</label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="mt-2 w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50"
+              className="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50"
               disabled={loading}
             />
           </div>
           <div className="relative animate-fade-in-left" style={{ animationDelay: '0.2s' }}>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium" style={{ color: 'var(--color-text)' }}>Password</label>
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="mt-2 w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50 pr-12"
+              className="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50 pr-12"
               disabled={loading}
             />
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-full text-gray-500 hover:text-gray-700 focus:outline-none mt-4"
+              className="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-full focus:outline-none mt-4"
+              style={{ color: 'var(--color-accent)' }}
               disabled={loading}
             >
               {showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}
@@ -136,9 +137,9 @@ function Login() {
             </Button>
           </div>
         </form>
-        <div className="mt-4 text-sm text-center text-gray-600 animate-fade-in-left" style={{ animationDelay: '0.4s' }}>
+        <div className="mt-4 text-sm text-center animate-fade-in-left" style={{ animationDelay: '0.4s', color: 'var(--color-text)' }}>
           <p>
-            Don’t have an account?{' '}
+            Don't have an account?{' '}
             <a href="/register" className="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-200">
               Register here
             </a>
@@ -154,17 +155,17 @@ function Login() {
       </div>
 
       <Modal isOpen={isForgotModalOpen} onClose={() => setIsForgotModalOpen(false)}>
-        <h3 className="text-xl font-bold mb-4">Forgot Password</h3>
+        <h3 className="text-xl font-bold mb-4" style={{ color: 'var(--color-text)' }}>Forgot Password</h3>
         <form onSubmit={handleForgotSubmit} className="space-y-4">
           <div>
-            <label htmlFor="forgot-email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label htmlFor="forgot-email" className="block text-sm font-medium" style={{ color: 'var(--color-text)' }}>Email</label>
             <Input
               id="forgot-email"
               type="email"
               value={forgotEmail}
               onChange={(e) => setForgotEmail(e.target.value)}
               placeholder="Enter your email"
-              className="mt-1 w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400"
+              className="mt-1 w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
             />
           </div>
           <Button

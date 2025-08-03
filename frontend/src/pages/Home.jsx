@@ -67,16 +67,16 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+    <div style={{ background: 'var(--color-bg)', color: 'var(--color-text)', minHeight: '100vh', fontFamily: 'sans-serif' }}>
       {/* Header */}
-      <header className="py-4 sm:py-6 shadow-md">  
+      <header className="py-4 sm:py-6 shadow-md" style={{ background: 'var(--color-secondary)' }}>  
         <div className="max-w-7xl mx-auto flex items-center justify-center px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-0">Lost & Found - College Portal</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-0" style={{ color: 'var(--color-text)' }}>Lost & Found - College Portal</h1>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8" style={{ background: 'var(--color-bg)', color: 'var(--color-text)' }}>
         {/* Search & Filter */}
         <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
           <input
@@ -84,12 +84,22 @@ function Home() {
             placeholder="Search by title, description, or tags..."
             value={searchTerm}
             onChange={handleSearch}
-            className="w-full sm:w-2/3 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition duration-200"
+            className="w-full sm:w-2/3 p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base transition duration-200"
+            style={{ 
+              border: '1px solid var(--color-secondary)', 
+              background: 'var(--color-bg)', 
+              color: 'var(--color-text)' 
+            }}
           />
           <select
             value={statusFilter}
             onChange={handleStatusChange}
-            className="w-full sm:w-1/3 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base appearance-none bg-white"
+            className="w-full sm:w-1/3 p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base appearance-none"
+            style={{ 
+              border: '1px solid var(--color-secondary)', 
+              background: 'var(--color-bg)', 
+              color: 'var(--color-text)' 
+            }}
           >
             <option value="All">All Statuses</option>
             <option value="Lost">Lost</option>
@@ -102,7 +112,7 @@ function Home() {
         {/* Items Grid */}
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <svg className="animate-spin h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin h-10 w-10" style={{ color: 'var(--color-primary)' }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
@@ -114,7 +124,7 @@ function Home() {
             ))}
           </div>
         ) : (
-          <div className="bg-white text-gray-600 text-center py-12 px-6 sm:px-8 rounded-lg shadow-md">
+          <div className="text-center py-12 px-6 sm:px-8 rounded-lg shadow-md" style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}>
             <p className="text-lg sm:text-xl">No items found matching your search.</p>
           </div>
         )}
@@ -133,7 +143,8 @@ function Home() {
       <div className="fixed bottom-4 right-4 sm:hidden">
         <Link
           to="/items/create"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-3 px-4 rounded-full shadow-lg transition duration-200"
+          className="text-sm font-medium py-3 px-4 rounded-full shadow-lg transition duration-200"
+          style={{ background: 'var(--color-primary)', color: 'var(--color-bg)' }}
         >
           + Add New Item
         </Link>
