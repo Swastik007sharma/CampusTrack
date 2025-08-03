@@ -28,8 +28,10 @@ const ItemCard = ({
             onClick={() => window.open(item.image, '_blank')}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center" style={{ background: 'var(--color-bg)' }}>
-            <FaImage className="text-4xl" style={{ color: 'var(--color-text)' }} />
+          <div className="w-full h-full flex flex-col items-center justify-center" style={{ background: 'var(--color-secondary)' }}>
+            <FaImage className="text-4xl text-blue-500 mb-2" />
+            <p className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>No Image Available</p>
+            <p className="text-xs" style={{ color: 'var(--color-text)', opacity: 0.7 }}>Click to view details</p>
           </div>
         )}
         {showActions && (
