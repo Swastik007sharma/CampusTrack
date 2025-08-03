@@ -11,16 +11,14 @@ const ItemCard = ({
   onEditChange,
   onEditSubmit,
   onCancelEdit,
-  onMarkAsReturned, // New prop for marking item as returned
   onGenerateOTP,    // New prop for generating OTP
   onVerifyOTP,      // New prop for verifying OTP
   otp,              // OTP value
   setOtp,           // Function to update OTP
 }) => {
   return (
-         <div className="rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] group" style={{ background: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
-            <div className="relative w-full h-48 sm:h-56 md:h-64 bg-gray-100 rounded-t-xl overflow-hidden">
-
+    <div className="rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] group" style={{ background: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
+      <div className="relative w-full h-48 sm:h-56 md:h-64 bg-gray-100 rounded-t-xl overflow-hidden">
         {item.image ? (
           <img
             src={item.image}
@@ -29,10 +27,21 @@ const ItemCard = ({
             onClick={() => window.open(item.image, '_blank')}
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center" style={{ background: 'var(--color-secondary)' }}>
-            <FaImage className="text-4xl text-blue-500 mb-2" />
-            <p className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>No Image Available</p>
-            <p className="text-xs" style={{ color: 'var(--color-text)', opacity: 0.7 }}>Click to view details</p>
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 group-hover:from-blue-50 group-hover:to-indigo-50 transition-all duration-300 ease-in-out">
+            <div className="flex flex-col items-center space-y-3 p-6 rounded-lg bg-white bg-opacity-80 backdrop-blur-sm shadow-sm group-hover:shadow-md transition-all duration-300">
+              <div className="relative">
+                <FaSearch className="text-gray-400 text-4xl group-hover:text-blue-400 transition-colors duration-300" />
+                <FaImage className="text-gray-300 text-2xl absolute -bottom-1 -right-1 group-hover:text-blue-300 transition-colors duration-300" />
+              </div>
+              <div className="text-center">
+                <p className="text-gray-500 text-sm font-medium group-hover:text-gray-600 transition-colors duration-300">
+                  No Image Available
+                </p>
+                <p className="text-gray-400 text-xs mt-1 group-hover:text-gray-500 transition-colors duration-300">
+                  Click to view details
+                </p>
+              </div>
+            </div>
           </div>
         )}
         {showActions && (
@@ -46,7 +55,7 @@ const ItemCard = ({
             </button>
             <button
               onClick={onDelete}
-              className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors duration-200"
+              className="bg-red-500 hover:bg-red-700 text-white p-2 rounded-full bg-opacity-80 hover:bg-opacity-100 transition-all duration-200 hover:scale-110 shadow-sm hover:shadow-md"
               aria-label="Delete item"
             >
               <FaTrash size={16} />
@@ -64,10 +73,10 @@ const ItemCard = ({
               value={editFormData.title}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base"
-              style={{ 
-                border: '1px solid var(--color-secondary)', 
-                background: 'var(--color-bg)', 
-                color: 'var(--color-text)' 
+              style={{
+                border: '1px solid var(--color-secondary)',
+                background: 'var(--color-bg)',
+                color: 'var(--color-text)'
               }}
               required
             />
@@ -76,10 +85,10 @@ const ItemCard = ({
               value={editFormData.description}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base h-20"
-              style={{ 
-                border: '1px solid var(--color-secondary)', 
-                background: 'var(--color-bg)', 
-                color: 'var(--color-text)' 
+              style={{
+                border: '1px solid var(--color-secondary)',
+                background: 'var(--color-bg)',
+                color: 'var(--color-text)'
               }}
               required
             />
@@ -88,10 +97,10 @@ const ItemCard = ({
               value={editFormData.status}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base"
-              style={{ 
-                border: '1px solid var(--color-secondary)', 
-                background: 'var(--color-bg)', 
-                color: 'var(--color-text)' 
+              style={{
+                border: '1px solid var(--color-secondary)',
+                background: 'var(--color-bg)',
+                color: 'var(--color-text)'
               }}
               required
             >
@@ -106,10 +115,10 @@ const ItemCard = ({
               value={editFormData.category}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base"
-              style={{ 
-                border: '1px solid var(--color-secondary)', 
-                background: 'var(--color-bg)', 
-                color: 'var(--color-text)' 
+              style={{
+                border: '1px solid var(--color-secondary)',
+                background: 'var(--color-bg)',
+                color: 'var(--color-text)'
               }}
               required
             />
@@ -119,10 +128,10 @@ const ItemCard = ({
               value={editFormData.location}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base"
-              style={{ 
-                border: '1px solid var(--color-secondary)', 
-                background: 'var(--color-bg)', 
-                color: 'var(--color-text)' 
+              style={{
+                border: '1px solid var(--color-secondary)',
+                background: 'var(--color-bg)',
+                color: 'var(--color-text)'
               }}
               required
             />
@@ -131,22 +140,22 @@ const ItemCard = ({
               name="image"
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base"
-              style={{ 
-                border: '1px solid var(--color-secondary)', 
-                background: 'var(--color-bg)', 
-                color: 'var(--color-text)' 
+              style={{
+                border: '1px solid var(--color-secondary)',
+                background: 'var(--color-bg)',
+                color: 'var(--color-text)'
               }}
             />
             <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={onEditSubmit}
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors duration-200"
+                className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 transition-all duration-200 text-sm hover:scale-105 transform shadow-sm hover:shadow-md"
               >
                 Save
               </button>
               <button
                 onClick={onCancelEdit}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors duration-200"
+                className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600 transition-all duration-200 text-sm hover:scale-105 transform shadow-sm hover:shadow-md"
               >
                 Cancel
               </button>
@@ -175,16 +184,16 @@ const ItemCard = ({
             </p>
           </div>
           <div className="mt-4 flex flex-col gap-2">
-                         <Link
-               to={`/items/${item._id}`}
-               className="text-center py-2 px-4 rounded-md transition-colors duration-200"
-               style={{ 
-                 background: item.status === 'Claimed' ? '#6b7280' : 'var(--color-primary)',
-                 color: item.status === 'Claimed' ? '#ffffff' : 'var(--color-bg)'
-               }}
-             >
-               {item.status === 'Claimed' ? 'Already Claimed' : 'View Details →'}
-             </Link>
+            <Link
+              to={`/items/${item._id}`}
+              className="text-center py-2 px-4 rounded-md transition-colors duration-200"
+              style={{
+                background: 'var(--color-primary)',
+                color: 'var(--color-bg)'
+              }}
+            >
+              View Details →
+            </Link>
             {item.status === 'Claimed' && showActions && (
               <div className="flex flex-col gap-2">
                 <button
@@ -201,10 +210,10 @@ const ItemCard = ({
                       onChange={(e) => setOtp(e.target.value)}
                       placeholder="Enter OTP"
                       className="w-full p-2 border rounded-md text-sm"
-                      style={{ 
-                        border: '1px solid var(--color-secondary)', 
-                        background: 'var(--color-bg)', 
-                        color: 'var(--color-text)' 
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
                       }}
                     />
                     <button

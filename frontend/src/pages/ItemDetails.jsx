@@ -64,7 +64,7 @@ function ItemDetails() {
   const [otp, setOtp] = useState("");
   const [otpItemId, setOtpItemId] = useState(null);
 
-  const fetchItem = async () => {
+  const fetchItem = React.useCallback(async () => {
     console.log("Fetching item - id:", id, "user:", user);
     if (!id) {
       console.warn("No id provided for fetch");
@@ -99,12 +99,12 @@ function ItemDetails() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, user]);
 
   useEffect(() => {
     console.log("Initial useEffect running - id:", id, "user:", user);
     fetchItem();
-  }, [id]);
+  }, [id, user, fetchItem]);
 
   useEffect(() => {
     console.log(
@@ -118,7 +118,7 @@ function ItemDetails() {
     if (!loading && !item) {
       fetchItem();
     }
-  }, [loading, item]);
+  }, [loading, item, fetchItem, id]);
 
   const handleManualFetch = () => {
     console.log("Manual fetch triggered with id:", id);
@@ -174,45 +174,15 @@ function ItemDetails() {
       navigate("/login");
       return;
     }
-    
-    // First, generate OTP for claiming
     setClaimLoading(true);
     try {
-      const response = await generateOTPForItem(id);
-      setOtpItemId(id);
-      setOtp("");
-      toast.success(
-        `OTP generated for claiming: ${response.data.otp}. Please verify this OTP to complete your claim.`
-      );
-    } catch (err) {
-      toast.error(
-        "Failed to generate OTP for claiming: " +
-          (err.response?.data?.message || err.message)
-      );
-    } finally {
-      setClaimLoading(false);
-    }
-  };
-
-  const handleVerifyClaimOTP = async () => {
-    if (!otp.trim()) {
-      toast.error("Please enter the OTP.");
-      return;
-    }
-    setClaimLoading(true);
-    try {
-      // First verify the OTP
-      await verifyOTPForItem(id, { otp });
-      // Then claim the item
       await claimItem(id);
       await fetchItem();
-      toast.success("OTP verified and item claimed successfully! The owner will be notified.");
-      setOtpItemId(null);
-      setOtp("");
+      toast.success("Item claimed successfully! The owner will be notified.");
       navigate("/dashboard");
     } catch (err) {
       toast.error(
-        "Failed to verify OTP and claim item: " + (err.response?.data?.message || err.message)
+        "Failed to claim item: " + (err.response?.data?.message || err.message)
       );
     } finally {
       setClaimLoading(false);
@@ -256,9 +226,9 @@ function ItemDetails() {
       );
       toast.error(
         "Failed to start conversation: " +
-          (err.response?.data?.message ||
-            err.message ||
-            "Unknown server error. Please try again later.")
+        (err.response?.data?.message ||
+          err.message ||
+          "Unknown server error. Please try again later.")
       );
     } finally {
       setConversationLoading(false);
@@ -286,7 +256,7 @@ function ItemDetails() {
     } catch (err) {
       toast.error(
         "Failed to assign keeper: " +
-          (err.response?.data?.message || err.message)
+        (err.response?.data?.message || err.message)
       );
     } finally {
       setClaimLoading(false);
@@ -312,7 +282,7 @@ function ItemDetails() {
     } catch (err) {
       toast.error(
         "Failed to generate OTP: " +
-          (err.response?.data?.message || err.message)
+        (err.response?.data?.message || err.message)
       );
     } finally {
       setClaimLoading(false);
@@ -342,7 +312,7 @@ function ItemDetails() {
 
   const isOwner = user && String(user.id) === String(item?.postedBy?._id);
   const isKeeper = user && String(user.id) === String(item?.keeperId);
-  const isClaimant = user && user.id === item?.claimedById;
+  // const isClaimant = user && user.id === item?.claimedById;
   const isPosterOrKeeper =
     user &&
     (String(user.id) === String(item?.postedBy?._id) ||
@@ -401,8 +371,18 @@ function ItemDetails() {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full h-64 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                    <p className="text-gray-500 dark:text-gray-400 text-lg">No image available</p>
+                  <div className="w-full h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center group hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 ease-in-out">
+                    <div className="flex flex-col items-center space-y-3 p-6 rounded-lg bg-white bg-opacity-80 backdrop-blur-sm shadow-sm group-hover:shadow-md transition-all duration-300">
+                      <div className="relative">
+                        <FaSearch className="text-gray-400 text-4xl group-hover:text-blue-400 transition-colors duration-300" />
+                        <FaImage className="text-gray-300 text-2xl absolute -bottom-1 -right-1 group-hover:text-blue-300 transition-colors duration-300" />
+                      </div>
+                      <div className="text-center">
+                        <p className="text-gray-500 text-sm font-medium group-hover:text-gray-600 transition-colors duration-300">
+                          No Image Available
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
@@ -470,85 +450,33 @@ function ItemDetails() {
                     ) : (
                       <div className="space-y-3">
                         {!isOwner && !isKeeper && (
-                          <div className="space-y-3">
-                            <button
-                              onClick={handleClaim}
-                              disabled={claimLoading || item.status === "Claimed"}
-                              className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                                claimLoading || item.status === "Claimed"
-                                  ? "opacity-50 cursor-not-allowed"
-                                  : ""
+                          <button
+                            onClick={handleClaim}
+                            disabled={claimLoading || item.status === "Claimed"}
+                            className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading || item.status === "Claimed"
+                              ? "opacity-50 cursor-not-allowed"
+                              : ""
                               }`}
-                              style={{ 
-                                background: claimLoading || item.status === "Claimed" ? '#6b7280' : 'var(--color-primary)',
-                                color: claimLoading || item.status === "Claimed" ? '#ffffff' : 'var(--color-bg)'
-                              }}
-                            >
-                              {claimLoading
-                                ? "Processing..."
-                                : item.status === "Claimed"
+                            style={{
+                              background: claimLoading || item.status === "Claimed" ? '#6b7280' : 'var(--color-primary)',
+                              color: claimLoading || item.status === "Claimed" ? '#ffffff' : 'var(--color-bg)'
+                            }}
+                          >
+                            {claimLoading
+                              ? "Processing..."
+                              : item.status === "Claimed"
                                 ? "Already Claimed"
                                 : "Claim Item"}
-                            </button>
-                            
-                            {/* OTP Input for Claiming */}
-                            {otpItemId === id && !isOwner && !isKeeper && (
-                              <div className="space-y-3">
-                                <div className="flex items-center space-x-2">
-                                  <input
-                                    type="text"
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value)}
-                                    placeholder="Enter OTP to verify claim"
-                                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                                    style={{ 
-                                      border: '1px solid var(--color-secondary)', 
-                                      background: 'var(--color-bg)', 
-                                      color: 'var(--color-text)' 
-                                    }}
-                                  />
-                                  <button
-                                    onClick={handleVerifyClaimOTP}
-                                    disabled={claimLoading}
-                                    className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                                      claimLoading
-                                        ? "opacity-50 cursor-not-allowed"
-                                        : ""
-                                    }`}
-                                    style={{ 
-                                      background: claimLoading ? 'var(--color-secondary)' : 'var(--color-accent)',
-                                      color: 'var(--color-bg)'
-                                    }}
-                                  >
-                                    {claimLoading ? "Verifying..." : "Verify & Claim"}
-                                  </button>
-                                </div>
-                                <button
-                                  onClick={() => {
-                                    setOtpItemId(null);
-                                    setOtp("");
-                                  }}
-                                  className="w-full py-1 px-2 rounded-md text-sm font-medium transition-colors duration-200"
-                                  style={{ 
-                                    background: 'var(--color-secondary)', 
-                                    color: 'var(--color-text)' 
-                                  }}
-                                >
-                                  Cancel Claim
-                                </button>
-                              </div>
-                            )}
-                          </div>
+                          </button>
                         )}
                         <button
                           onClick={handleStartConversation}
                           disabled={conversationLoading}
-                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                            conversationLoading
-                              ? "opacity-50 cursor-not-allowed"
-                              : ""
-                          }`}
-                          style={{ 
+                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${conversationLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                            }`}
+                          style={{
                             background: conversationLoading ? 'var(--color-secondary)' : 'var(--color-primary)',
                             color: 'var(--color-bg)'
                           }}
@@ -562,12 +490,11 @@ function ItemDetails() {
                         <button
                           onClick={handleAssignKeeper}
                           disabled={claimLoading}
-                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                            claimLoading
-                              ? "opacity-50 cursor-not-allowed"
-                              : ""
-                          }`}
-                          style={{ 
+                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                            }`}
+                          style={{
                             background: claimLoading ? 'var(--color-secondary)' : 'var(--color-accent)',
                             color: 'var(--color-bg)'
                           }}
@@ -583,12 +510,11 @@ function ItemDetails() {
                         <button
                           onClick={handleGenerateOTP}
                           disabled={claimLoading}
-                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                            claimLoading
-                              ? "opacity-50 cursor-not-allowed"
-                              : ""
-                          }`}
-                          style={{ 
+                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                            }`}
+                          style={{
                             background: claimLoading ? 'var(--color-secondary)' : 'var(--color-accent)',
                             color: 'var(--color-bg)'
                           }}
@@ -605,21 +531,20 @@ function ItemDetails() {
                           onChange={(e) => setOtp(e.target.value)}
                           placeholder="Enter OTP to mark as returned"
                           className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
-                          style={{ 
-                            border: '1px solid var(--color-secondary)', 
-                            background: 'var(--color-bg)', 
-                            color: 'var(--color-text)' 
+                          style={{
+                            border: '1px solid var(--color-secondary)',
+                            background: 'var(--color-bg)',
+                            color: 'var(--color-text)'
                           }}
                         />
                         <button
                           onClick={handleVerifyOTP}
                           disabled={claimLoading}
-                          className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                            claimLoading
-                              ? "opacity-50 cursor-not-allowed"
-                              : ""
-                          }`}
-                          style={{ 
+                          className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                            }`}
+                          style={{
                             background: claimLoading ? 'var(--color-secondary)' : 'var(--color-accent)',
                             color: 'var(--color-bg)'
                           }}
@@ -668,7 +593,7 @@ function ItemDetails() {
                     <p className="text-gray-500 dark:text-gray-400 text-lg">No image available</p>
                   </div>
                 )}
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-4">
                   <input
                     type="file"
                     id="image"
@@ -676,10 +601,10 @@ function ItemDetails() {
                     accept="image/*"
                     onChange={handleEditChange}
                     className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                    style={{ 
-                      border: '1px solid var(--color-secondary)', 
-                      background: 'var(--color-bg)', 
-                      color: 'var(--color-text)' 
+                    style={{
+                      border: '1px solid var(--color-secondary)',
+                      background: 'var(--color-bg)',
+                      color: 'var(--color-text)'
                     }}
                   />
                   <label className="flex items-center">
@@ -712,10 +637,10 @@ function ItemDetails() {
                       value={editFormData.title}
                       onChange={handleEditChange}
                       className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                      style={{ 
-                        border: '1px solid var(--color-secondary)', 
-                        background: 'var(--color-bg)', 
-                        color: 'var(--color-text)' 
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
                       }}
                       required
                     />
@@ -734,10 +659,10 @@ function ItemDetails() {
                       value={editFormData.description}
                       onChange={handleEditChange}
                       className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm h-24 resize-y"
-                      style={{ 
-                        border: '1px solid var(--color-secondary)', 
-                        background: 'var(--color-bg)', 
-                        color: 'var(--color-text)' 
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
                       }}
                       required
                     />
@@ -759,10 +684,10 @@ function ItemDetails() {
                       value={editFormData.category}
                       onChange={handleEditChange}
                       className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                      style={{ 
-                        border: '1px solid var(--color-secondary)', 
-                        background: 'var(--color-bg)', 
-                        color: 'var(--color-text)' 
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
                       }}
                       required
                     />
@@ -781,10 +706,10 @@ function ItemDetails() {
                       value={editFormData.status}
                       onChange={handleEditChange}
                       className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                      style={{ 
-                        border: '1px solid var(--color-secondary)', 
-                        background: 'var(--color-bg)', 
-                        color: 'var(--color-text)' 
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
                       }}
                       required
                     >
@@ -809,10 +734,10 @@ function ItemDetails() {
                       value={editFormData.location}
                       onChange={handleEditChange}
                       className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                      style={{ 
-                        border: '1px solid var(--color-secondary)', 
-                        background: 'var(--color-bg)', 
-                        color: 'var(--color-text)' 
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
                       }}
                       required
                     />
@@ -832,12 +757,11 @@ function ItemDetails() {
                 <button
                   type="submit"
                   disabled={claimLoading}
-                  className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                    claimLoading
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
-                  style={{ 
+                  className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                    }`}
+                  style={{
                     background: claimLoading ? 'var(--color-secondary)' : 'var(--color-primary)',
                     color: 'var(--color-bg)'
                   }}
