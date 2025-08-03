@@ -19,7 +19,8 @@ const ItemCard = ({
 }) => {
   return (
          <div className="rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] group" style={{ background: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
-      <div className="relative h-48 sm:h-56">
+            <div className="relative w-full h-48 sm:h-56 md:h-64 bg-gray-100 rounded-t-xl overflow-hidden">
+
         {item.image ? (
           <img
             src={item.image}
@@ -38,7 +39,7 @@ const ItemCard = ({
           <div className="absolute top-2 right-2 flex gap-2">
             <button
               onClick={onEdit}
-              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-colors duration-200"
+              className="text-blue-600 hover:text-blue-800 p-2 rounded-full bg-white bg-opacity-80 hover:bg-opacity-100 transition-all duration-200 hover:scale-110 shadow-sm hover:shadow-md"
               aria-label="Edit item"
             >
               <FaEdit size={16} />
