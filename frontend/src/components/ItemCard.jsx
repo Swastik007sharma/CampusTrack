@@ -18,7 +18,7 @@ const ItemCard = ({
   setOtp,           // Function to update OTP
 }) => {
   return (
-    <div className="rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-shadow duration-300" style={{ background: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
+         <div className="rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] group" style={{ background: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
       <div className="relative h-48 sm:h-56">
         {item.image ? (
           <img
@@ -172,12 +172,16 @@ const ItemCard = ({
             </p>
           </div>
           <div className="mt-4 flex flex-col gap-2">
-            <Link
-              to={`/items/${item._id}`}
-              className="bg-blue-500 hover:bg-blue-600 text-white text-center py-2 px-4 rounded-md transition-colors duration-200"
-            >
-              View Details →
-            </Link>
+                         <Link
+               to={`/items/${item._id}`}
+               className="text-center py-2 px-4 rounded-md transition-colors duration-200"
+               style={{ 
+                 background: item.status === 'Claimed' ? '#6b7280' : 'var(--color-primary)',
+                 color: item.status === 'Claimed' ? '#ffffff' : 'var(--color-bg)'
+               }}
+             >
+               {item.status === 'Claimed' ? 'Already Claimed' : 'View Details →'}
+             </Link>
             {item.status === 'Claimed' && showActions && (
               <div className="flex flex-col gap-2">
                 <button

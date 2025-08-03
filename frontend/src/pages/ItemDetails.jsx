@@ -174,15 +174,45 @@ function ItemDetails() {
       navigate("/login");
       return;
     }
+    
+    // First, generate OTP for claiming
     setClaimLoading(true);
     try {
+      const response = await generateOTPForItem(id);
+      setOtpItemId(id);
+      setOtp("");
+      toast.success(
+        `OTP generated for claiming: ${response.data.otp}. Please verify this OTP to complete your claim.`
+      );
+    } catch (err) {
+      toast.error(
+        "Failed to generate OTP for claiming: " +
+          (err.response?.data?.message || err.message)
+      );
+    } finally {
+      setClaimLoading(false);
+    }
+  };
+
+  const handleVerifyClaimOTP = async () => {
+    if (!otp.trim()) {
+      toast.error("Please enter the OTP.");
+      return;
+    }
+    setClaimLoading(true);
+    try {
+      // First verify the OTP
+      await verifyOTPForItem(id, { otp });
+      // Then claim the item
       await claimItem(id);
       await fetchItem();
-      toast.success("Item claimed successfully! The owner will be notified.");
+      toast.success("OTP verified and item claimed successfully! The owner will be notified.");
+      setOtpItemId(null);
+      setOtp("");
       navigate("/dashboard");
     } catch (err) {
       toast.error(
-        "Failed to claim item: " + (err.response?.data?.message || err.message)
+        "Failed to verify OTP and claim item: " + (err.response?.data?.message || err.message)
       );
     } finally {
       setClaimLoading(false);
@@ -440,25 +470,75 @@ function ItemDetails() {
                     ) : (
                       <div className="space-y-3">
                         {!isOwner && !isKeeper && (
-                          <button
-                            onClick={handleClaim}
-                            disabled={claimLoading || item.status === "Claimed"}
-                            className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                              claimLoading || item.status === "Claimed"
-                                ? "opacity-50 cursor-not-allowed"
-                                : ""
-                            }`}
-                            style={{ 
-                              background: claimLoading || item.status === "Claimed" ? '#6b7280' : 'var(--color-primary)',
-                              color: claimLoading || item.status === "Claimed" ? '#ffffff' : 'var(--color-bg)'
-                            }}
-                          >
-                            {claimLoading
-                              ? "Processing..."
-                              : item.status === "Claimed"
-                              ? "Already Claimed"
-                              : "Claim Item"}
-                          </button>
+                          <div className="space-y-3">
+                            <button
+                              onClick={handleClaim}
+                              disabled={claimLoading || item.status === "Claimed"}
+                              className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
+                                claimLoading || item.status === "Claimed"
+                                  ? "opacity-50 cursor-not-allowed"
+                                  : ""
+                              }`}
+                              style={{ 
+                                background: claimLoading || item.status === "Claimed" ? '#6b7280' : 'var(--color-primary)',
+                                color: claimLoading || item.status === "Claimed" ? '#ffffff' : 'var(--color-bg)'
+                              }}
+                            >
+                              {claimLoading
+                                ? "Processing..."
+                                : item.status === "Claimed"
+                                ? "Already Claimed"
+                                : "Claim Item"}
+                            </button>
+                            
+                            {/* OTP Input for Claiming */}
+                            {otpItemId === id && !isOwner && !isKeeper && (
+                              <div className="space-y-3">
+                                <div className="flex items-center space-x-2">
+                                  <input
+                                    type="text"
+                                    value={otp}
+                                    onChange={(e) => setOtp(e.target.value)}
+                                    placeholder="Enter OTP to verify claim"
+                                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                    style={{ 
+                                      border: '1px solid var(--color-secondary)', 
+                                      background: 'var(--color-bg)', 
+                                      color: 'var(--color-text)' 
+                                    }}
+                                  />
+                                  <button
+                                    onClick={handleVerifyClaimOTP}
+                                    disabled={claimLoading}
+                                    className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
+                                      claimLoading
+                                        ? "opacity-50 cursor-not-allowed"
+                                        : ""
+                                    }`}
+                                    style={{ 
+                                      background: claimLoading ? 'var(--color-secondary)' : 'var(--color-accent)',
+                                      color: 'var(--color-bg)'
+                                    }}
+                                  >
+                                    {claimLoading ? "Verifying..." : "Verify & Claim"}
+                                  </button>
+                                </div>
+                                <button
+                                  onClick={() => {
+                                    setOtpItemId(null);
+                                    setOtp("");
+                                  }}
+                                  className="w-full py-1 px-2 rounded-md text-sm font-medium transition-colors duration-200"
+                                  style={{ 
+                                    background: 'var(--color-secondary)', 
+                                    color: 'var(--color-text)' 
+                                  }}
+                                >
+                                  Cancel Claim
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         )}
                         <button
                           onClick={handleStartConversation}
@@ -517,13 +597,13 @@ function ItemDetails() {
                         </button>
                       </div>
                     )}
-                    {otpItemId === id && (
+                    {otpItemId === id && isPosterOrKeeper && (
                       <div className="flex items-center space-x-2">
                         <input
                           type="text"
                           value={otp}
                           onChange={(e) => setOtp(e.target.value)}
-                          placeholder="Enter OTP"
+                          placeholder="Enter OTP to mark as returned"
                           className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
                           style={{ 
                             border: '1px solid var(--color-secondary)', 
@@ -544,7 +624,7 @@ function ItemDetails() {
                             color: 'var(--color-bg)'
                           }}
                         >
-                          {claimLoading ? "Verifying..." : "Verify OTP"}
+                          {claimLoading ? "Verifying..." : "Mark as Returned"}
                         </button>
                       </div>
                     )}
