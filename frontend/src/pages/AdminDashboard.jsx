@@ -218,16 +218,7 @@ function UsersTab({ user, page, setPage, totalPages, setTotalPages, limit }) {
 										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>{u.email}</td>
 										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>{u.role}</td>
 										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>
-											<span
-												className={`px-2 py-1 rounded-full text-xs ${u.isActive
-													? ""
-													: ""
-													}`}
-												style={{
-													background: u.isActive ? 'var(--color-accent)' : 'var(--color-secondary)',
-													color: u.isActive ? 'var(--color-bg)' : 'var(--color-text)'
-												}}
-											>
+											<span className={`status-badge ${u.isActive ? 'active' : 'inactive'}`}>
 												{u.isActive ? "Active" : "Inactive"}
 											</span>
 										</td>
@@ -533,16 +524,7 @@ function ItemsTab({ page, setPage, totalPages, setTotalPages, limit }) {
 											{item.category?.name || "N/A"}
 										</td>
 										<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>
-											<span
-												className={`px-2 py-1 rounded-full text-xs ${item.isActive
-													? ""
-													: ""
-													}`}
-												style={{
-													background: item.isActive ? 'var(--color-accent)' : 'var(--color-secondary)',
-													color: item.isActive ? 'var(--color-bg)' : 'var(--color-text)'
-												}}
-											>
+											<span className={`status-badge ${item.isActive ? 'active' : 'inactive'}`}>
 												{item.isActive ? "Active" : "Inactive"}
 											</span>
 										</td>
@@ -1265,16 +1247,7 @@ function AdminDashboard() {
 															{category.description || "N/A"}
 														</td>
 														<td className="px-6 py-4 text-sm" style={{ color: 'var(--color-text)' }}>
-															<span
-																className={`px-2 py-1 rounded-full text-xs ${category.isActive
-																	? ""
-																	: ""
-																	}`}
-																style={{
-																	background: category.isActive ? 'var(--color-accent)' : 'var(--color-secondary)',
-																	color: category.isActive ? 'var(--color-bg)' : 'var(--color-text)'
-																}}
-															>
+															<span className={`status-badge ${category.isActive ? 'active' : 'inactive'}`}>
 																{category.isActive ? "Active" : "Inactive"}
 															</span>
 														</td>

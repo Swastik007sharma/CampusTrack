@@ -18,7 +18,8 @@ const ItemCard = ({
   setOtp,           // Function to update OTP
 }) => {
   return (
-
+    <div className="rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-shadow duration-300" style={{ background: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
+      <div className="relative h-48 sm:h-56">
         {item.image ? (
           <img
             src={item.image}
@@ -27,21 +28,22 @@ const ItemCard = ({
             onClick={() => window.open(item.image, '_blank')}
           />
         ) : (
-
+          <div className="w-full h-full flex items-center justify-center" style={{ background: 'var(--color-bg)' }}>
+            <FaImage className="text-4xl" style={{ color: 'var(--color-text)' }} />
           </div>
         )}
         {showActions && (
           <div className="absolute top-2 right-2 flex gap-2">
             <button
               onClick={onEdit}
-
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-colors duration-200"
               aria-label="Edit item"
             >
               <FaEdit size={16} />
             </button>
             <button
               onClick={onDelete}
-
+              className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors duration-200"
               aria-label="Delete item"
             >
               <FaTrash size={16} />
@@ -135,13 +137,13 @@ const ItemCard = ({
             <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={onEditSubmit}
-
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors duration-200"
               >
                 Save
               </button>
               <button
                 onClick={onCancelEdit}
-
+                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors duration-200"
               >
                 Cancel
               </button>
@@ -156,7 +158,9 @@ const ItemCard = ({
           <div className="text-sm sm:text-base space-y-2 mb-4" style={{ color: 'var(--color-text)' }}>
             <p>
               <span className="font-medium" style={{ color: 'var(--color-text)' }}>Status:</span>{' '}
-              <span className="capitalize">{item.status}</span>
+              <span className={`status-badge ${item.status?.toLowerCase()}`}>
+                {item.status}
+              </span>
             </p>
             <p>
               <span className="font-medium" style={{ color: 'var(--color-text)' }}>Category:</span>{' '}
@@ -170,7 +174,7 @@ const ItemCard = ({
           <div className="mt-4 flex flex-col gap-2">
             <Link
               to={`/items/${item._id}`}
-
+              className="bg-blue-500 hover:bg-blue-600 text-white text-center py-2 px-4 rounded-md transition-colors duration-200"
             >
               View Details →
             </Link>
@@ -178,7 +182,7 @@ const ItemCard = ({
               <div className="flex flex-col gap-2">
                 <button
                   onClick={onGenerateOTP}
-
+                  className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md transition-colors duration-200"
                 >
                   Generate OTP
                 </button>
@@ -198,7 +202,7 @@ const ItemCard = ({
                     />
                     <button
                       onClick={onVerifyOTP}
-
+                      className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition-colors duration-200"
                     >
                       Verify
                     </button>

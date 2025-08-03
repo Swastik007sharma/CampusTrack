@@ -86,7 +86,7 @@ function Navbar() {
                   activeClassName="bg-green-800"
                 />
               )}
-              <ThemeToggle className="ml-4" />
+              <ThemeToggle className="ml-4 !w-8 !h-8 !p-1 !text-sm" />
               <div ref={profileRef} className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -121,22 +121,15 @@ function Navbar() {
             <>
               <NavLink to="/login" label="Login" active={location.pathname === '/login'} />
               <NavLink to="/register" label="Register" active={location.pathname === '/register'} />
-              <ThemeToggle className="ml-4" />
+              <ThemeToggle className="ml-4 !w-8 !h-8 !p-1 !text-sm" />
               {/* Guest Login button removed */}
             </>
           )}
         </div>
         <div className="md:hidden flex items-center justify-between w-full">
-          {/* Left side - Hamburger menu for logged in users */}
+          {/* Left side - Logo stays on left */}
           <div className="flex items-center">
-            {token && !isMobileMenuOpen && (
-              <button
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="focus:outline-none hover:text-blue-200 transition duration-200 ease-in-out hover:scale-105 p-2"
-              >
-                <FaBars className="w-5 h-5" />
-              </button>
-            )}
+            {/* Logo is already handled above */}
           </div>
           
           {/* Center - Login/Register links for logged out users */}
@@ -149,9 +142,18 @@ function Navbar() {
             )}
           </div>
           
-          {/* Right side - Theme toggle - Always visible */}
-          <div className="flex items-center">
-            <ThemeToggle className="!ml-0 !p-1 !text-lg" />
+          {/* Right side - Theme toggle and hamburger menu */}
+          <div className="flex items-center gap-2">
+            <ThemeToggle className="!ml-0 !p-1 !text-sm !w-8 !h-8" />
+            {token && (
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="focus:outline-none hover:text-blue-200 transition duration-200 ease-in-out hover:scale-105 p-2"
+                aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+              >
+                {isMobileMenuOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -206,7 +208,7 @@ function Navbar() {
               
               {/* Theme toggle in mobile menu */}
               <div className="flex justify-center py-2">
-                <ThemeToggle className="!ml-0 !p-1 !text-lg" />
+                <ThemeToggle className="!ml-0 !p-1 !text-sm !w-8 !h-8" />
               </div>
               
               <button

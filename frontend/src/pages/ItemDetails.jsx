@@ -371,7 +371,8 @@ function ItemDetails() {
                     </div>
                   </div>
                 ) : (
-
+                  <div className="w-full h-64 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                    <p className="text-gray-500 dark:text-gray-400 text-lg">No image available</p>
                   </div>
                 )}
               </div>
@@ -390,7 +391,9 @@ function ItemDetails() {
                     </p>
                     <p style={{ color: 'var(--color-text)' }}>
                       <span className="font-medium" style={{ color: 'var(--color-text)' }}>Status:</span>{" "}
-                      {item.status}
+                      <span className={`status-badge ${item.status?.toLowerCase()}`}>
+                        {item.status}
+                      </span>
                     </p>
                     <p style={{ color: 'var(--color-text)' }}>
                       <span className="font-medium" style={{ color: 'var(--color-text)' }}>Category:</span>{" "}
@@ -446,8 +449,8 @@ function ItemDetails() {
                                 : ""
                             }`}
                             style={{ 
-                              background: claimLoading || item.status === "Claimed" ? 'var(--color-secondary)' : 'var(--color-primary)',
-                              color: 'var(--color-bg)'
+                              background: claimLoading || item.status === "Claimed" ? '#6b7280' : 'var(--color-primary)',
+                              color: claimLoading || item.status === "Claimed" ? '#ffffff' : 'var(--color-bg)'
                             }}
                           >
                             {claimLoading
@@ -581,7 +584,8 @@ function ItemDetails() {
                     </div>
                   </div>
                 ) : (
-
+                  <div className="w-full h-64 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center mb-2">
+                    <p className="text-gray-500 dark:text-gray-400 text-lg">No image available</p>
                   </div>
                 )}
                 <div className="flex items-center space-x-4">
