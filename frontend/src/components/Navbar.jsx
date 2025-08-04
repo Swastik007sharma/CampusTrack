@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { FaUser, FaSignOutAlt, FaHome, FaBell, FaPlus, FaComments, FaBars, FaTimes, FaTachometerAlt, FaShieldAlt } from 'react-icons/fa';
+import ThemeToggle from './common/ThemeToggle';
 
 function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -32,6 +33,14 @@ function Navbar() {
     navigate('/login');
   };
 
+  // Guest login functionality removed
+  // const handleGuestLogin = () => {
+  //   // Simulate guest login (customize as needed)
+  //   localStorage.setItem('token', 'guest-token');
+  //   localStorage.setItem('user', JSON.stringify({ name: 'Guest', email: 'guest@example.com', role: 'guest' }));
+  //   window.location.reload();
+  // };
+
   const getInitial = () => user?.name?.charAt(0).toUpperCase() || 'U';
   const isAdmin = user?.role === 'admin';
 
@@ -44,7 +53,7 @@ function Navbar() {
   }
 
   return (
-    <nav className="bg-blue-600 text-white p-4 sm:p-4 shadow-lg sticky top-0 z-30">
+    <nav className="bg-navbar text-white p-4 sm:p-4 shadow-lg sticky top-0 z-30" style={{ background: 'var(--color-navbar)' }}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link
           to="/"
@@ -77,6 +86,7 @@ function Navbar() {
                   activeClassName="bg-green-800"
                 />
               )}
+              <ThemeToggle className="ml-4 !w-8 !h-8 !p-1 !text-sm" />
               <div ref={profileRef} className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -111,25 +121,40 @@ function Navbar() {
             <>
               <NavLink to="/login" label="Login" active={location.pathname === '/login'} />
               <NavLink to="/register" label="Register" active={location.pathname === '/register'} />
+              <ThemeToggle className="ml-4 !w-8 !h-8 !p-1 !text-sm" />
+              {/* Guest Login button removed */}
             </>
           )}
         </div>
-        <div className="md:hidden flex items-center">
-          {token ? (
-            !isMobileMenuOpen && (
+        <div className="md:hidden flex items-center justify-between w-full">
+          {/* Left side - Logo stays on left */}
+          <div className="flex items-center">
+            {/* Logo is already handled above */}
+          </div>
+          
+          {/* Center - Login/Register links for logged out users */}
+          <div className="flex items-center">
+            {!token && (
+              <div className="flex gap-3">
+                <NavLink to="/login" label="Login" active={location.pathname === '/login'} />
+                <NavLink to="/register" label="Register" active={location.pathname === '/register'} />
+              </div>
+            )}
+          </div>
+          
+          {/* Right side - Theme toggle and hamburger menu */}
+          <div className="flex items-center gap-2">
+            <ThemeToggle className="!ml-0 !p-1 !text-sm !w-8 !h-8" />
+            {token && (
               <button
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="focus:outline-none hover:text-blue-200 transition duration-200 ease-in-out hover:scale-105"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="focus:outline-none hover:text-blue-200 transition duration-200 ease-in-out hover:scale-105 p-2"
+                aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
               >
-                <FaBars className="w-6 h-6" />
+                {isMobileMenuOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
               </button>
-            )
-          ) : (
-            <div className="flex gap-4">
-              <NavLink to="/login" label="Login" active={location.pathname === '/login'} />
-              <NavLink to="/register" label="Register" active={location.pathname === '/register'} />
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
       {isMobileMenuOpen && token && (
@@ -180,6 +205,12 @@ function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 />
               )}
+              
+              {/* Theme toggle in mobile menu */}
+              <div className="flex justify-center py-2">
+                <ThemeToggle className="!ml-0 !p-1 !text-sm !w-8 !h-8" />
+              </div>
+              
               <button
                 onClick={handleLogout}
                 className="bg-red-500 text-sm text-white py-2 px-4 rounded-md hover:bg-red-600 hover:text-blue-200 transition duration-200 ease-in-out flex items-center justify-center gap-2 mx-auto hover:scale-105"

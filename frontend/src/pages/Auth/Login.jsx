@@ -1,4 +1,8 @@
-﻿import { useState, useContext } from 'react';
+
+import { useState, useContext } from 'react';
+
+import { useState, useContext } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { login, forgotPassword } from '../../services/authService';
@@ -65,7 +69,11 @@ function Login() {
   };
 
   return (
+
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{ background: 'var(--color-bg)' }}>
+
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 animate-fade-in-down" style={{ background: 'var(--color-bg)' }}>
+
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -77,12 +85,20 @@ function Login() {
         draggable
         pauseOnHover
       />
+
       
       <div className="w-full max-w-md p-8 rounded-xl shadow-lg" style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}>
         <h2 className="text-3xl font-bold text-center mb-6" style={{ color: 'var(--color-text)' }}>Login</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
+
+      <div className="w-full max-w-md p-8 rounded-xl shadow-lg transform transition-all duration-500 hover:shadow-xl" style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}>
+        <h2 className="text-3xl font-bold text-center mb-6 animate-fade-in-down" style={{ color: 'var(--color-text)' }}>Login</h2>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="animate-fade-in-left" style={{ animationDelay: '0.1s' }}>
+
             <label htmlFor="email" className="block text-sm font-medium" style={{ color: 'var(--color-text)' }}>Email</label>
             <Input
               id="email"
@@ -90,12 +106,19 @@ function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
+
               className="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
               disabled={loading}
             />
           </div>
           
           <div className="relative">
+              className="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50"
+              disabled={loading}
+            />
+          </div>
+          <div className="relative animate-fade-in-left" style={{ animationDelay: '0.2s' }}>
+
             <label htmlFor="password" className="block text-sm font-medium" style={{ color: 'var(--color-text)' }}>Password</label>
             <Input
               id="password"
@@ -103,7 +126,11 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
+ 
               className="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 pr-12"
+
+              className="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 shadow-sm disabled:opacity-50 pr-12"
+
               disabled={loading}
             />
             <button
@@ -120,7 +147,14 @@ function Login() {
           <div>
             <Button
               type="submit"
+
               className="w-full py-3 rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700"
+
+              className={`w-full py-3 rounded-lg text-sm font-semibold text-white transition-all duration-200 shadow-md ${
+                loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 hover:shadow-lg'
+              }`}
+              style = {{ text: "white"}}
+
               disabled={loading}
             >
               {loading ? 'Logging in...' : 'Login'}
@@ -128,12 +162,19 @@ function Login() {
           </div>
         </form>
 
+
         <GoogleLoginButton disabled={loading} />
 
         <div className="mt-4 text-sm text-center" style={{ color: 'var(--color-text)' }}>
           <p>
             Don't have an account?{' '}
             <a href="/register" className="text-blue-600 hover:underline">
+
+        <div className="mt-4 text-sm text-center animate-fade-in-left" style={{ animationDelay: '0.4s', color: 'var(--color-text)' }}>
+          <p>
+            Don't have an account?{' '}
+            <a href="/register" className="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-200">
+
               Register here
             </a>
           </p>

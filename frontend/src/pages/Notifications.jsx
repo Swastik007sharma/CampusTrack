@@ -83,9 +83,9 @@ function Notifications() {
   if (authLoading || !user) return <Loader />;
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-6 bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+    <main className="max-w-4xl mx-auto px-4 py-6 min-h-screen" style={{ background: 'var(--color-bg)' }}>
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 md:text-3xl lg:text-4xl animate-fade-in-down">
+        <h1 className="text-2xl font-bold md:text-3xl lg:text-4xl animate-fade-in-down" style={{ color: 'var(--color-text)' }}>
           Notifications
         </h1>
       </header>
@@ -96,23 +96,28 @@ function Notifications() {
           <Loader />
         </div>
       ) : notifications.length > 0 ? (
-        <section className="bg-white rounded-xl shadow-md overflow-hidden animate-fade-in-down">
-          <ul className="divide-y divide-gray-200">
+        <section className="rounded-xl shadow-md overflow-hidden animate-fade-in-down" style={{ background: 'var(--color-secondary)' }}>
+          <ul className="divide-y" style={{ borderColor: 'var(--color-secondary)' }}>
             {notifications.map((notif) => (
               <li
                 key={notif._id}
-                className={`p-4 hover:bg-gray-50 transition-colors duration-200 ${
-                  notif.isRead ? 'bg-white' : 'bg-blue-50'
+                className={`p-4 transition-colors duration-200 ${
+                  notif.isRead ? '' : ''
                 } animate-fade-in-left`}
+                style={{ 
+                  background: notif.isRead ? 'var(--color-secondary)' : 'var(--color-primary)',
+                  color: 'var(--color-text)'
+                }}
                 role="region"
                 aria-label={`Notification: ${notif.message}`}
               >
                 <div className="flex flex-col space-y-2">
-                  <p className="text-sm md:text-base text-gray-800 break-words">
+                  <p className="text-sm md:text-base break-words" style={{ color: 'var(--color-text)' }}>
                     {notif.message}
                   </p>
                   <time
-                    className="text-xs md:text-sm text-gray-500"
+                    className="text-xs md:text-sm"
+                    style={{ color: 'var(--color-text)' }}
                     dateTime={notif.createdAt}
                   >
                     {new Date(notif.createdAt).toLocaleString([], {
@@ -123,7 +128,8 @@ function Notifications() {
                   {!notif.isRead && (
                     <button
                       onClick={() => handleMarkAsRead(notif._id)}
-                      className="self-start px-3 py-1 bg-indigo-600 text-white text-sm rounded-full hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
+                      className="self-start px-3 py-1 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
+                      style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                       aria-label={`Mark notification ${notif.message} as read`}
                     >
                       Mark as Read
@@ -140,7 +146,7 @@ function Notifications() {
           />
         </section>
       ) : (
-        <p className="text-center text-gray-500 text-base md:text-lg py-12 animate-fade-in-down">
+        <p className="text-center py-12 animate-fade-in-down" style={{ color: 'var(--color-text)' }}>
           No notifications available
         </p>
       )}

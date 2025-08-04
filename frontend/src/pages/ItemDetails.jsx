@@ -64,7 +64,7 @@ function ItemDetails() {
   const [otp, setOtp] = useState("");
   const [otpItemId, setOtpItemId] = useState(null);
 
-  const fetchItem = async () => {
+  const fetchItem = React.useCallback(async () => {
     console.log("Fetching item - id:", id, "user:", user);
     if (!id) {
       console.warn("No id provided for fetch");
@@ -99,12 +99,12 @@ function ItemDetails() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, user]);
 
   useEffect(() => {
     console.log("Initial useEffect running - id:", id, "user:", user);
     fetchItem();
-  }, [id]);
+  }, [id, user, fetchItem]);
 
   useEffect(() => {
     console.log(
@@ -118,7 +118,7 @@ function ItemDetails() {
     if (!loading && !item) {
       fetchItem();
     }
-  }, [loading, item]);
+  }, [loading, item, fetchItem, id]);
 
   const handleManualFetch = () => {
     console.log("Manual fetch triggered with id:", id);
@@ -226,9 +226,9 @@ function ItemDetails() {
       );
       toast.error(
         "Failed to start conversation: " +
-          (err.response?.data?.message ||
-            err.message ||
-            "Unknown server error. Please try again later.")
+        (err.response?.data?.message ||
+          err.message ||
+          "Unknown server error. Please try again later.")
       );
     } finally {
       setConversationLoading(false);
@@ -256,7 +256,7 @@ function ItemDetails() {
     } catch (err) {
       toast.error(
         "Failed to assign keeper: " +
-          (err.response?.data?.message || err.message)
+        (err.response?.data?.message || err.message)
       );
     } finally {
       setClaimLoading(false);
@@ -282,7 +282,7 @@ function ItemDetails() {
     } catch (err) {
       toast.error(
         "Failed to generate OTP: " +
-          (err.response?.data?.message || err.message)
+        (err.response?.data?.message || err.message)
       );
     } finally {
       setClaimLoading(false);
@@ -312,7 +312,7 @@ function ItemDetails() {
 
   const isOwner = user && String(user.id) === String(item?.postedBy?._id);
   const isKeeper = user && String(user.id) === String(item?.keeperId);
-  const isClaimant = user && user.id === item?.claimedById;
+  // const isClaimant = user && user.id === item?.claimedById;
   const isPosterOrKeeper =
     user &&
     (String(user.id) === String(item?.postedBy?._id) ||
@@ -320,21 +320,22 @@ function ItemDetails() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6 bg-gray-50 min-h-screen flex items-center justify-center">
-        <p className="text-lg text-gray-600 animate-pulse">Loading...</p>
+      <div className="container mx-auto p-6 min-h-screen flex items-center justify-center" style={{ background: 'var(--color-bg)' }}>
+        <p className="text-lg animate-pulse" style={{ color: 'var(--color-text)' }}>Loading...</p>
       </div>
     );
   }
 
   if (!item || Object.keys(item).length === 0) {
     return (
-      <div className="container mx-auto p-6 bg-gray-50 min-h-screen flex items-center justify-center">
-        <p className="text-gray-600 text-lg font-medium">
+      <div className="container mx-auto p-6 min-h-screen flex items-center justify-center" style={{ background: 'var(--color-bg)' }}>
+        <p className="text-lg font-medium" style={{ color: 'var(--color-text)' }}>
           Item not found or failed to load.
         </p>
         <button
           onClick={handleManualFetch}
-          className="ml-4 py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 text-sm font-medium"
+          className="ml-4 py-2 px-4 rounded-md transition-colors duration-200 text-sm font-medium"
+          style={{ background: 'var(--color-primary)', color: 'var(--color-bg)' }}
         >
           Retry Fetch
         </button>
@@ -344,14 +345,14 @@ function ItemDetails() {
 
   return (
     <ErrorBoundary>
-      <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <div className="container mx-auto p-6 min-h-screen" style={{ background: 'var(--color-bg)' }}>
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 border-b-2 border-gray-200 pb-2">
+          <h1 className="text-3xl md:text-4xl font-bold mb-6 border-b-2 pb-2" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>
             {item.title}
           </h1>
 
           {!isEditing ? (
-            <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="rounded-lg shadow-lg p-6" style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}>
               <div className="mb-6">
                 {item.image ? (
                   <div
@@ -380,9 +381,6 @@ function ItemDetails() {
                         <p className="text-gray-500 text-sm font-medium group-hover:text-gray-600 transition-colors duration-300">
                           No Image Available
                         </p>
-                        <p className="text-gray-400 text-xs mt-1 group-hover:text-gray-500 transition-colors duration-300">
-                          Upload an image to enhance visibility
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -391,49 +389,51 @@ function ItemDetails() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-700 mb-4 border-b border-gray-200 pb-2">
+                  <h2 className="text-xl font-semibold mb-4 border-b pb-2" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>
                     Item Details
                   </h2>
                   <div className="space-y-3">
-                    <p className="text-gray-600">
-                      <span className="font-medium text-gray-900">
+                    <p style={{ color: 'var(--color-text)' }}>
+                      <span className="font-medium" style={{ color: 'var(--color-text)' }}>
                         Description:
                       </span>{" "}
                       {item.description}
                     </p>
-                    <p className="text-gray-600">
-                      <span className="font-medium text-gray-900">Status:</span>{" "}
-                      {item.status}
+                    <p style={{ color: 'var(--color-text)' }}>
+                      <span className="font-medium" style={{ color: 'var(--color-text)' }}>Status:</span>{" "}
+                      <span className={`status-badge ${item.status?.toLowerCase()}`}>
+                        {item.status}
+                      </span>
                     </p>
-                    <p className="text-gray-600">
-                      <span className="font-medium text-gray-900">Category:</span>{" "}
+                    <p style={{ color: 'var(--color-text)' }}>
+                      <span className="font-medium" style={{ color: 'var(--color-text)' }}>Category:</span>{" "}
                       {item.category?.name || "N/A"}
                     </p>
-                    <p className="text-gray-600">
-                      <span className="font-medium text-gray-900">Location:</span>{" "}
+                    <p style={{ color: 'var(--color-text)' }}>
+                      <span className="font-medium" style={{ color: 'var(--color-text)' }}>Location:</span>{" "}
                       {item.location}
                     </p>
-                    <p className="text-gray-600">
-                      <span className="font-medium text-gray-900">Posted By:</span>{" "}
+                    <p style={{ color: 'var(--color-text)' }}>
+                      <span className="font-medium" style={{ color: 'var(--color-text)' }}>Posted By:</span>{" "}
                       {item.postedBy?.name || "Unknown"}
                     </p>
-                    <p className="text-gray-600">
-                      <span className="font-medium text-gray-900">Posted On:</span>{" "}
+                    <p style={{ color: 'var(--color-text)' }}>
+                      <span className="font-medium" style={{ color: 'var(--color-text)' }}>Posted On:</span>{" "}
                       {new Date(item.createdAt).toLocaleDateString()}
                     </p>
-                    <p className="text-gray-600">
-                      <span className="font-medium text-gray-900">Keeper:</span>{" "}
+                    <p style={{ color: 'var(--color-text)' }}>
+                      <span className="font-medium" style={{ color: 'var(--color-text)' }}>Keeper:</span>{" "}
                       {item.keeperName || "Not Assigned"}
                     </p>
-                    <p className="text-gray-600">
-                      <span className="font-medium text-gray-900">Claimed By:</span>{" "}
+                    <p style={{ color: 'var(--color-text)' }}>
+                      <span className="font-medium" style={{ color: 'var(--color-text)' }}>Claimed By:</span>{" "}
                       {item.claimedByName || "Not Claimed"}
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-700 mb-4 border-b border-gray-200 pb-2">
+                  <h2 className="text-xl font-semibold mb-4 border-b pb-2" style={{ color: 'var(--color-text)', borderColor: 'var(--color-secondary)' }}>
                     Actions
                   </h2>
                   <div className="space-y-4">
@@ -441,7 +441,8 @@ function ItemDetails() {
                       <div className="space-y-3">
                         <button
                           onClick={handleEdit}
-                          className="w-full py-2 px-4 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors duration-200 font-medium text-sm shadow-md hover:shadow-lg"
+                          className="w-full py-2 px-4 rounded-md transition-colors duration-200 font-medium text-sm shadow-md hover:shadow-lg"
+                          style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                         >
                           Edit Item
                         </button>
@@ -452,27 +453,33 @@ function ItemDetails() {
                           <button
                             onClick={handleClaim}
                             disabled={claimLoading || item.status === "Claimed"}
-                            className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                              claimLoading || item.status === "Claimed"
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-green-600 hover:bg-green-700"
-                            }`}
+                            className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading || item.status === "Claimed"
+                              ? "opacity-50 cursor-not-allowed"
+                              : ""
+                              }`}
+                            style={{
+                              background: claimLoading || item.status === "Claimed" ? '#6b7280' : 'var(--color-primary)',
+                              color: claimLoading || item.status === "Claimed" ? '#ffffff' : 'var(--color-bg)'
+                            }}
                           >
                             {claimLoading
                               ? "Processing..."
                               : item.status === "Claimed"
-                              ? "Already Claimed"
-                              : "Claim Item"}
+                                ? "Already Claimed"
+                                : "Claim Item"}
                           </button>
                         )}
                         <button
                           onClick={handleStartConversation}
                           disabled={conversationLoading}
-                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                            conversationLoading
-                              ? "bg-gray-400 cursor-not-allowed"
-                              : "bg-blue-600 hover:bg-blue-700"
-                          }`}
+                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${conversationLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                            }`}
+                          style={{
+                            background: conversationLoading ? 'var(--color-secondary)' : 'var(--color-primary)',
+                            color: 'var(--color-bg)'
+                          }}
                         >
                           {conversationLoading ? "Processing..." : "Message Owner"}
                         </button>
@@ -483,11 +490,14 @@ function ItemDetails() {
                         <button
                           onClick={handleAssignKeeper}
                           disabled={claimLoading}
-                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                            claimLoading
-                              ? "bg-gray-400 cursor-not-allowed"
-                              : "bg-purple-600 hover:bg-purple-700"
-                          }`}
+                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                            }`}
+                          style={{
+                            background: claimLoading ? 'var(--color-secondary)' : 'var(--color-accent)',
+                            color: 'var(--color-bg)'
+                          }}
                         >
                           {claimLoading
                             ? "Processing..."
@@ -500,41 +510,53 @@ function ItemDetails() {
                         <button
                           onClick={handleGenerateOTP}
                           disabled={claimLoading}
-                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                            claimLoading
-                              ? "bg-gray-400 cursor-not-allowed"
-                              : "bg-orange-600 hover:bg-orange-700"
-                          }`}
+                          className={`w-full py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                            }`}
+                          style={{
+                            background: claimLoading ? 'var(--color-secondary)' : 'var(--color-accent)',
+                            color: 'var(--color-bg)'
+                          }}
                         >
                           {claimLoading ? "Processing..." : "Generate OTP"}
                         </button>
                       </div>
                     )}
-                    {otpItemId === id && (
+                    {otpItemId === id && isPosterOrKeeper && (
                       <div className="flex items-center space-x-2">
                         <input
                           type="text"
                           value={otp}
                           onChange={(e) => setOtp(e.target.value)}
-                          placeholder="Enter OTP"
-                          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                          placeholder="Enter OTP to mark as returned"
+                          className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                          style={{
+                            border: '1px solid var(--color-secondary)',
+                            background: 'var(--color-bg)',
+                            color: 'var(--color-text)'
+                          }}
                         />
                         <button
                           onClick={handleVerifyOTP}
                           disabled={claimLoading}
-                          className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                            claimLoading
-                              ? "bg-gray-400 cursor-not-allowed"
-                              : "bg-purple-600 hover:bg-purple-700"
-                          }`}
+                          className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                            }`}
+                          style={{
+                            background: claimLoading ? 'var(--color-secondary)' : 'var(--color-accent)',
+                            color: 'var(--color-bg)'
+                          }}
                         >
-                          {claimLoading ? "Verifying..." : "Verify OTP"}
+                          {claimLoading ? "Verifying..." : "Mark as Returned"}
                         </button>
                       </div>
                     )}
                     <button
                       onClick={handleShare}
-                      className="w-full py-2 px-4 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-200 font-medium text-sm shadow-md hover:shadow-lg"
+                      className="w-full py-2 px-4 rounded-md transition-colors duration-200 font-medium text-sm shadow-md hover:shadow-lg"
+                      style={{ background: 'var(--color-primary)', color: 'var(--color-bg)' }}
                     >
                       Share Item
                     </button>
@@ -545,8 +567,9 @@ function ItemDetails() {
           ) : (
             <form
               onSubmit={handleEditSubmit}
-              className="bg-white rounded-lg shadow-lg p-6"
+              className="rounded-lg shadow-lg p-6"
               encType="multipart/form-data"
+              style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}
             >
               <div className="mb-6">
                 {item.image ? (
@@ -566,31 +589,23 @@ function ItemDetails() {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center mb-2 group hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 ease-in-out">
-                    <div className="flex flex-col items-center space-y-3 p-6 rounded-lg bg-white bg-opacity-80 backdrop-blur-sm shadow-sm group-hover:shadow-md transition-all duration-300">
-                      <div className="relative">
-                        <FaSearch className="text-gray-400 text-4xl group-hover:text-blue-400 transition-colors duration-300" />
-                        <FaImage className="text-gray-300 text-2xl absolute -bottom-1 -right-1 group-hover:text-blue-300 transition-colors duration-300" />
-                      </div>
-                      <div className="text-center">
-                        <p className="text-gray-500 text-sm font-medium group-hover:text-gray-600 transition-colors duration-300">
-                          No Image Available
-                        </p>
-                        <p className="text-gray-400 text-xs mt-1 group-hover:text-gray-500 transition-colors duration-300">
-                          Select a new image below
-                        </p>
-                      </div>
-                    </div>
+                  <div className="w-full h-64 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center mb-2">
+                    <p className="text-gray-500 dark:text-gray-400 text-lg">No image available</p>
                   </div>
                 )}
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-4">
                   <input
                     type="file"
                     id="image"
                     name="image"
                     accept="image/*"
                     onChange={handleEditChange}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    style={{
+                      border: '1px solid var(--color-secondary)',
+                      background: 'var(--color-bg)',
+                      color: 'var(--color-text)'
+                    }}
                   />
                   <label className="flex items-center">
                     <input
@@ -600,7 +615,7 @@ function ItemDetails() {
                       onChange={handleEditChange}
                       className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                     />
-                    <span className="text-sm text-gray-700">Remove Image</span>
+                    <span className="text-sm" style={{ color: 'var(--color-text)' }}>Remove Image</span>
                   </label>
                 </div>
               </div>
@@ -610,7 +625,8 @@ function ItemDetails() {
                   <div>
                     <label
                       htmlFor="title"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium mb-1"
+                      style={{ color: 'var(--color-text)' }}
                     >
                       Title
                     </label>
@@ -620,14 +636,20 @@ function ItemDetails() {
                       name="title"
                       value={editFormData.title}
                       onChange={handleEditChange}
-                      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
+                      }}
                       required
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="description"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium mb-1"
+                      style={{ color: 'var(--color-text)' }}
                     >
                       Description
                     </label>
@@ -636,7 +658,12 @@ function ItemDetails() {
                       name="description"
                       value={editFormData.description}
                       onChange={handleEditChange}
-                      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm h-24 resize-y"
+                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm h-24 resize-y"
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
+                      }}
                       required
                     />
                   </div>
@@ -645,7 +672,8 @@ function ItemDetails() {
                   <div>
                     <label
                       htmlFor="category"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium mb-1"
+                      style={{ color: 'var(--color-text)' }}
                     >
                       Category
                     </label>
@@ -655,14 +683,20 @@ function ItemDetails() {
                       name="category"
                       value={editFormData.category}
                       onChange={handleEditChange}
-                      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
+                      }}
                       required
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="status"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium mb-1"
+                      style={{ color: 'var(--color-text)' }}
                     >
                       Status
                     </label>
@@ -671,7 +705,12 @@ function ItemDetails() {
                       name="status"
                       value={editFormData.status}
                       onChange={handleEditChange}
-                      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
+                      }}
                       required
                     >
                       <option value="Lost">Lost</option>
@@ -683,7 +722,8 @@ function ItemDetails() {
                   <div>
                     <label
                       htmlFor="location"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium mb-1"
+                      style={{ color: 'var(--color-text)' }}
                     >
                       Location
                     </label>
@@ -693,7 +733,12 @@ function ItemDetails() {
                       name="location"
                       value={editFormData.location}
                       onChange={handleEditChange}
-                      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                      style={{
+                        border: '1px solid var(--color-secondary)',
+                        background: 'var(--color-bg)',
+                        color: 'var(--color-text)'
+                      }}
                       required
                     />
                   </div>
@@ -704,18 +749,22 @@ function ItemDetails() {
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors duration-200 text-sm font-medium shadow-md hover:shadow-lg"
+                  className="py-2 px-4 rounded-md transition-colors duration-200 text-sm font-medium shadow-md hover:shadow-lg"
+                  style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={claimLoading}
-                  className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${
-                    claimLoading
-                      ? "bg-blue-400 cursor-not-allowed"
-                      : "bg-blue-600 hover:bg-blue-700"
-                  }`}
+                  className={`py-2 px-4 rounded-md text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-200 ${claimLoading
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                    }`}
+                  style={{
+                    background: claimLoading ? 'var(--color-secondary)' : 'var(--color-primary)',
+                    color: 'var(--color-bg)'
+                  }}
                 >
                   {claimLoading ? "Saving..." : "Save Changes"}
                 </button>
@@ -729,7 +778,7 @@ function ItemDetails() {
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
             onClick={() => setIsImageModalOpen(false)}
           >
-            <div className="relative max-w-4xl w-full h-[80vh] bg-white rounded-lg overflow-hidden shadow-2xl">
+            <div className="relative max-w-4xl w-full h-[80vh] rounded-lg overflow-hidden shadow-2xl" style={{ background: 'var(--color-secondary)' }}>
               <button
                 onClick={() => setIsImageModalOpen(false)}
                 className="absolute top-4 right-4 text-white bg-red-500 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition-colors duration-200"
