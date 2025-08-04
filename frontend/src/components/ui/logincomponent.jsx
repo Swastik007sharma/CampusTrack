@@ -1,16 +1,16 @@
-﻿import { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { login, forgotPassword } from '../../services/authService';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
 import Modal from '../../components/common/Modal';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import GoogleLoginButton from '../../components/auth/GoogleLoginButton';
+import GoogleLoginButton from '../auth/GoogleLoginButton';
 
-function Login() {
+function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,9 @@ function Login() {
   const { login: setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +61,7 @@ function Login() {
     forgotPassword({ email: forgotEmail })
       .then(() => {
         toast.success('OTP sent to your email. Please verify it.');
-        setTimeout(() => navigate(/verify-otp?email=&forgot=true), 2000);
+        setTimeout(() => navigate(`/verify-otp?email=${encodeURIComponent(forgotEmail)}&forgot=true`), 2000);
       })
       .catch((err) => toast.error(err.response?.data?.message || 'Failed to send OTP. Try again.'));
   };
@@ -128,6 +130,7 @@ function Login() {
           </div>
         </form>
 
+        {/* Google Login Component */}
         <GoogleLoginButton disabled={loading} />
 
         <div className="mt-4 text-sm text-center" style={{ color: 'var(--color-text)' }}>
@@ -174,4 +177,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginComponent;
