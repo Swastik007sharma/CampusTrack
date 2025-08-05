@@ -11,11 +11,11 @@ const ItemCard = ({
   onEditChange,
   onEditSubmit,
   onCancelEdit,
-  onMarkAsReturned, // New prop for marking item as returned
-  onGenerateOTP,    // New prop for generating OTP
-  onVerifyOTP,      // New prop for verifying OTP
-  otp,              // OTP value
-  setOtp,           // Function to update OTP
+  onMarkAsReturned,
+  onGenerateOTP,
+  onVerifyOTP,
+  otp,
+  setOtp,
 }) => {
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden w-full relative">
@@ -146,6 +146,27 @@ const ItemCard = ({
             >
               View Details
             </Link>
+
+            {/* ✅ New conditional buttons based on status */}
+            {showActions && (
+              <>
+                {item.status === 'Lost' && (
+                  <button
+                    className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition-colors text-sm w-full"
+                  >
+                    Found It?
+                  </button>
+                )}
+                {item.status === 'Found' && (
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition-colors text-sm w-full"
+                  >
+                    Claim as Mine
+                  </button>
+                )}
+              </>
+            )}
+
             {item.status === 'Claimed' && showActions && (
               <div className="flex flex-col gap-2">
                 <button
