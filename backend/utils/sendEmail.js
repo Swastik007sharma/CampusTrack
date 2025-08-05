@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const he = require('he');
 const {
   otpTemplate,
   claimNotificationTemplate,
@@ -30,29 +31,40 @@ const sendEmail = async (to, subject, templateName, templateData) => {
     throw new Error('Email credentials are missing. Please set EMAIL_USER and EMAIL_PASSWORD in the .env file.');
   }
 
+  // Escape all string values in templateData to prevent HTML injection
+  const escapedTemplateData = {};
+  if (templateData && typeof templateData === 'object') {
+    for (const key in templateData) {
+      if (Object.prototype.hasOwnProperty.call(templateData, key)) {
+        const value = templateData[key];
+        escapedTemplateData[key] = typeof value === 'string' ? he.encode(value) : value;
+      }
+    }
+  }
+
   try {
     let html;
     switch (templateName) {
       case 'otp':
-        html = otpTemplate(templateData.name, templateData.itemTitle, templateData.otp);
+        html = otpTemplate(escapedTemplateData.name, escapedTemplateData.itemTitle, escapedTemplateData.otp);
         break;
       case 'claimNotification':
-        html = claimNotificationTemplate(templateData.name, templateData.itemTitle);
+        html = claimNotificationTemplate(escapedTemplateData.name, escapedTemplateData.itemTitle);
         break;
       case 'returnNotification':
-        html = returnNotificationTemplate(templateData.name, templateData.itemTitle);
+        html = returnNotificationTemplate(escapedTemplateData.name, escapedTemplateData.itemTitle);
         break;
       case 'keeperAssignedNotification':
-        html = keeperAssignedNotificationTemplate(templateData.name, templateData.itemTitle, templateData.keeperName);
+        html = keeperAssignedNotificationTemplate(escapedTemplateData.name, escapedTemplateData.itemTitle, escapedTemplateData.keeperName);
         break;
       case 'passwordResetOtp':
-        html = passwordResetOtpTemplate(templateData.name, templateData.otp);
+        html = passwordResetOtpTemplate(escapedTemplateData.name, escapedTemplateData.otp);
         break;
       case 'claimTransaction':
-        html = claimTransactionTemplate(templateData.name, templateData.itemTitle, templateData.otp, templateData.ownerName);
+        html = claimTransactionTemplate(escapedTemplateData.name, escapedTemplateData.itemTitle, escapedTemplateData.otp, escapedTemplateData.ownerName);
         break;
       case 'accountVerificationOtp':
-        html = accountVerificationOtpTemplate(templateData.name, templateData.otp);
+        html = accountVerificationOtpTemplate(escapedTemplateData.name, escapedTemplateData.otp);
         break;
       default:
         throw new Error('Invalid email template name');

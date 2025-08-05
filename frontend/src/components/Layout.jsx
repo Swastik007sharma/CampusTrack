@@ -27,13 +27,13 @@ function Layout() {
   }, [socket, user, addNotification]);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen" style={{ background: 'var(--color-bg)', color: 'var(--color-text)' }}>
       <Navbar socket={socket} />
       <NotificationsBar />
-      <main className="flex-1 bg-gray-50 text-gray-900 font-sans py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
+      <main className="flex-1 font-sans py-6 sm:py-8 px-4 sm:px-6 lg:px-8" style={{ background: 'var(--color-bg)', color: 'var(--color-text)' }}>
         <Outlet context={{ socket }} />
       </main>
-      <footer className="bg-gray-800 text-white py-4">
+      <footer className="py-4" style={{ background: 'var(--color-navbar)', color: 'var(--color-text)' }}>
         <div className="container mx-auto text-center">
           <p className="text-sm">© 2025 Lost & Found. All rights reserved.</p>
         </div>

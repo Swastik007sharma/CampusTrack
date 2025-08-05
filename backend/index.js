@@ -27,7 +27,7 @@ const server = http.createServer(app);
 app.use(loggerMiddleware);
 app.use(corsConfig);
 app.use(express.json());
-// app.use(rateLimiter);
+app.use(rateLimiter);
 
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {

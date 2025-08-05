@@ -233,14 +233,14 @@ function UserDashboard() {
 
   if (!user) {
     return (
-      <div className="container mx-auto p-2 sm:p-4 md:p-6 bg-gray-50 min-h-screen flex items-center justify-center">
-        <p className="text-gray-600 text-sm sm:text-lg md:text-xl font-medium">Please log in to view your dashboard.</p>
+      <div className="container mx-auto p-2 sm:p-4 md:p-6 min-h-screen flex items-center justify-center" style={{ background: 'var(--color-bg)' }}>
+        <p className="text-sm sm:text-lg md:text-xl font-medium" style={{ color: 'var(--color-text)' }}>Please log in to view your dashboard.</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-2 sm:p-4 md:p-6 lg:p-10 bg-gray-50 min-h-screen">
+    <div style={{ background: 'var(--color-bg)', color: 'var(--color-text)', minHeight: '100vh' }}>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -255,35 +255,40 @@ function UserDashboard() {
       />
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 md:mb-8">
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-0">User Dashboard</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 sm:mb-0" style={{ color: 'var(--color-text)' }}>User Dashboard</h1>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 md:space-x-4">
             <Link
               to="/items/create"
-              className="bg-blue-600 text-white py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              className="py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              style={{ background: 'var(--color-primary)', color: 'var(--color-bg)' }}
             >
               Add New Item
             </Link>
             <Link
               to="/profile"
-              className="bg-green-600 text-white py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md hover:bg-green-700 transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              className="py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
             >
               Profile
             </Link>
             <Link
               to="/messages"
-              className="bg-purple-600 text-white py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md hover:bg-purple-700 transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              className="py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
             >
               Messages
             </Link>
             <Link
               to="/notifications"
-              className="bg-yellow-600 text-white py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md hover:bg-yellow-700 transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              className="py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
             >
               Notifications
             </Link>
             <button
               onClick={() => setViewType(viewType === 'list' ? 'card' : 'list')}
-              className="bg-gray-200 text-gray-800 py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md hover:bg-gray-300 transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              className="py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
+              style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}
             >
               Switch to {viewType === 'list' ? 'Card' : 'List'} View
             </button>
@@ -292,27 +297,27 @@ function UserDashboard() {
 
         {loading ? (
           <div className="flex justify-center items-center h-32 sm:h-48 md:h-64">
-            <p className="text-gray-600 text-sm sm:text-lg md:text-xl animate-pulse">Loading...</p>
+            <p className="text-sm sm:text-lg md:text-xl animate-pulse" style={{ color: 'var(--color-text)' }}>Loading...</p>
           </div>
         ) : (
           <div>
             {viewType === 'list' ? (
-              <div className="bg-white rounded-lg shadow-lg p-2 sm:p-4">
+              <div className="rounded-lg shadow-lg p-2 sm:p-4" style={{ background: 'var(--color-secondary)' }}>
                 <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                  <table className="min-w-full divide-y" style={{ borderColor: 'var(--color-secondary)' }}>
+                    <thead style={{ background: 'var(--color-bg)' }}>
                       <tr>
-                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold text-gray-600">Image</th>
-                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold text-gray-600">Title</th>
-                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold text-gray-600">Status</th>
-                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold text-gray-600">Category</th>
-                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold text-gray-600">Posted On</th>
-                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold text-gray-600">Actions</th>
+                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Image</th>
+                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Title</th>
+                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Status</th>
+                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Category</th>
+                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Posted On</th>
+                        <th className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y" style={{ borderColor: 'var(--color-secondary)' }}>
                       {items.map((item) => (
-                        <tr key={item._id} className="hover:bg-gray-50 transition-colors">
+                        <tr key={item._id} className="transition-colors" style={{ background: 'var(--color-secondary)' }}>
                           {editingItemId === item._id ? (
                             <>
                               <td className="px-1 sm:px-2 md:px-4 py-1 sm:py-2">
@@ -324,7 +329,12 @@ function UserDashboard() {
                                     type="file"
                                     name="image"
                                     onChange={handleEditChange}
-                                    className="w-full p-1 sm:p-2 border border-gray-300 rounded-md text-xs sm:text-sm"
+                                    className="w-full p-1 sm:p-2 border rounded-md text-xs sm:text-sm"
+                                    style={{ 
+                                      border: '1px solid var(--color-secondary)', 
+                                      background: 'var(--color-bg)', 
+                                      color: 'var(--color-text)' 
+                                    }}
                                   />
                                 </div>
                               </td>
@@ -334,7 +344,12 @@ function UserDashboard() {
                                   name="title"
                                   value={editFormData.title}
                                   onChange={handleEditChange}
-                                  className="w-full p-1 sm:p-2 border border-gray-300 rounded-md text-xs sm:text-sm"
+                                  className="w-full p-1 sm:p-2 border rounded-md text-xs sm:text-sm"
+                                  style={{ 
+                                    border: '1px solid var(--color-secondary)', 
+                                    background: 'var(--color-bg)', 
+                                    color: 'var(--color-text)' 
+                                  }}
                                   required
                                 />
                               </td>
@@ -343,7 +358,12 @@ function UserDashboard() {
                                   name="status"
                                   value={editFormData.status}
                                   onChange={handleEditChange}
-                                  className="w-full p-1 sm:p-2 border border-gray-300 rounded-md text-xs sm:text-sm"
+                                  className="w-full p-1 sm:p-2 border rounded-md text-xs sm:text-sm"
+                                  style={{ 
+                                    border: '1px solid var(--color-secondary)', 
+                                    background: 'var(--color-bg)', 
+                                    color: 'var(--color-text)' 
+                                  }}
                                   required
                                 >
                                   <option value="Lost">Lost</option>
@@ -357,7 +377,12 @@ function UserDashboard() {
                                   name="category"
                                   value={editFormData.category}
                                   onChange={handleEditChange}
-                                  className="w-full p-1 sm:p-2 border border-gray-300 rounded-md text-xs sm:text-sm"
+                                  className="w-full p-1 sm:p-2 border rounded-md text-xs sm:text-sm"
+                                  style={{ 
+                                    border: '1px solid var(--color-secondary)', 
+                                    background: 'var(--color-bg)', 
+                                    color: 'var(--color-text)' 
+                                  }}
                                   required
                                 >
                                   <option value="">Select a category</option>
@@ -372,7 +397,8 @@ function UserDashboard() {
                               <td className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 flex flex-col sm:flex-row gap-1 sm:gap-2">
                                 <button
                                   onClick={() => handleEditSubmit(item._id)}
-                                  className="bg-green-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm hover:bg-green-600 transition-colors w-full sm:w-auto"
+                                  className="px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm transition-colors w-full sm:w-auto"
+                                  style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                                 >
                                   Save
                                 </button>
@@ -381,7 +407,8 @@ function UserDashboard() {
                                     setEditingItemId(null);
                                     setCurrentImage('');
                                   }}
-                                  className="bg-gray-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm hover:bg-gray-600 transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                  className="px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                  style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}
                                 >
                                   Cancel
                                 </button>
@@ -393,25 +420,32 @@ function UserDashboard() {
                                 {item.image && <img src={item.image} alt={item.title} className="w-8 sm:w-12 md:w-16 h-8 sm:h-12 md:h-16 object-cover rounded-md" />}
                               </td>
                               <td className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-xs sm:text-sm font-medium">{item.title}</td>
-                              <td className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-xs sm:text-sm capitalize">{item.status}</td>
+                              <td className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-xs sm:text-sm">
+                                <span className={`status-badge ${item.status?.toLowerCase()}`}>
+                                  {item.status}
+                                </span>
+                              </td>
                               <td className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-xs sm:text-sm">{item.category?.name || 'N/A'}</td>
                               <td className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 text-xs sm:text-sm">{new Date(item.createdAt).toLocaleDateString()}</td>
                               <td className="px-1 sm:px-2 md:px-4 py-1 sm:py-2 flex flex-col sm:flex-row gap-1 sm:gap-2 flex-wrap">
                                 <Link
                                   to={`/items/${item._id}`}
-                                  className="bg-blue-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm hover:bg-blue-600 transition-colors w-full sm:w-auto"
+                                  className="px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm transition-colors w-full sm:w-auto"
+                                  style={{ background: 'var(--color-primary)', color: 'var(--color-bg)' }}
                                 >
                                   View
                                 </Link>
                                 <button
                                   onClick={() => handleEdit(item)}
-                                  className="bg-yellow-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm hover:bg-yellow-600 transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                  className="px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                  style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                                 >
                                   Edit
                                 </button>
                                 <button
                                   onClick={() => handleDelete(item._id)}
-                                  className="bg-red-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm hover:bg-red-600 transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                  className="px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                  style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                                 >
                                   Delete
                                 </button>
@@ -420,7 +454,8 @@ function UserDashboard() {
                                     {isPosterOrKeeper && (
                                       <button
                                         onClick={() => handleGenerateOTP(item._id)}
-                                        className="bg-indigo-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm hover:bg-indigo-600 transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                        className="px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                        style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                                       >
                                         Generate OTP
                                       </button>
@@ -432,17 +467,24 @@ function UserDashboard() {
                                           value={otp}
                                           onChange={(e) => setOtp(e.target.value)}
                                           placeholder="Enter OTP"
-                                          className="p-1 sm:p-2 border border-gray-300 rounded-md text-xs sm:text-sm w-full sm:w-20 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                          className="p-1 sm:p-2 border rounded-md text-xs sm:text-sm w-full sm:w-20 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                          style={{ 
+                                            border: '1px solid var(--color-secondary)', 
+                                            background: 'var(--color-bg)', 
+                                            color: 'var(--color-text)' 
+                                          }}
                                         />
                                         <button
                                           onClick={() => handleVerifyOTP(item._id)}
-                                          className="bg-purple-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm hover:bg-purple-600 transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                          className="px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                          style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                                         >
                                           Verify
                                         </button>
                                         <button
                                           onClick={handleCancelOTP}
-                                          className="bg-gray-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm hover:bg-gray-600 transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                          className="px-1 sm:px-2 py-0.5 sm:py-1 rounded-md text-xs sm:text-sm transition-colors w-full sm:w-auto mt-1 sm:mt-0"
+                                          style={{ background: 'var(--color-secondary)', color: 'var(--color-text)' }}
                                         >
                                           Cancel
                                         </button>
@@ -501,11 +543,12 @@ function UserDashboard() {
               </div>
             )}
             {items.length === 0 && (
-              <div className="bg-white rounded-lg shadow-lg p-2 sm:p-4 text-center">
-                <p className="text-gray-600 text-sm sm:text-lg md:text-xl">No items found. Start by adding a new item!</p>
+              <div className="rounded-lg shadow-lg p-2 sm:p-4 text-center" style={{ background: 'var(--color-secondary)' }}>
+                <p className="text-sm sm:text-lg md:text-xl" style={{ color: 'var(--color-text)' }}>No items found. Start by adding a new item!</p>
                 <Link
                   to="/items/create"
-                  className="mt-2 sm:mt-4 inline-block bg-blue-600 text-white py-1 sm:py-2 px-2 sm:px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 text-sm sm:text-base font-medium shadow-md hover:shadow-lg"
+                  className="mt-2 sm:mt-4 inline-block py-1 sm:py-2 px-2 sm:px-4 rounded-md transition-colors duration-200 text-sm sm:text-base font-medium shadow-md hover:shadow-lg"
+                  style={{ background: 'var(--color-primary)', color: 'var(--color-bg)' }}
                 >
                   Add New Item
                 </Link>

@@ -2,7 +2,8 @@ function Loader() {
 	return (
 		<div className="flex justify-center items-center h-64">
 			<svg
-				className="animate-spin h-12 w-12 text-blue-500"
+				className="animate-spin h-12 w-12"
+				style={{ color: 'var(--color-primary)' }}
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
 				viewBox="0 0 24 24"
