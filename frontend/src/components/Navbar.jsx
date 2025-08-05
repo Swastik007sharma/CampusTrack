@@ -7,8 +7,14 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
-import { navLinks } from "../constants/navLinks";
-import { MobileNavLink, NavLinkItem } from "./NavLink";
+
+const navLinks = [
+  { name: "Home", path: "/" },
+  { name: "Dashboard", path: "/dashboard" },
+  { name: "Profile", path: "/profile" },
+  { name: "Messages", path: "/messages" },
+  { name: "Notifications", path: "/notifications" },
+];
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(AuthContext);
@@ -48,6 +54,40 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  // Inline NavLink components
+  const NavLinkItem = ({ name, path }) => {
+    const isActive = location.pathname === path;
+    return (
+      <Link
+        to={path}
+        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+          isActive
+            ? 'bg-indigo-900 text-white'
+            : 'text-indigo-100 hover:bg-indigo-600 hover:text-white'
+        }`}
+      >
+        {name}
+      </Link>
+    );
+  };
+
+  const MobileNavLink = ({ name, path, onClick }) => {
+    const isActive = location.pathname === path;
+    return (
+      <Link
+        to={path}
+        onClick={onClick}
+        className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+          isActive
+            ? 'bg-indigo-900 text-white'
+            : 'text-indigo-100 hover:bg-indigo-600 hover:text-white'
+        }`}
+      >
+        {name}
+      </Link>
+    );
+  };
+
   return (
     <header className="bg-indigo-700 text-white shadow-md px-6 py-3 flex justify-between items-center relative z-50">
       <h1 className="text-xl font-bold cursor-pointer" onClick={() => navigate("/")}>
@@ -56,7 +96,7 @@ const Navbar = () => {
 
       <nav className="hidden md:flex gap-6 items-center">
         {navLinks.map((link) => (
-          <NavLinkItem key={link.to} {...link} />
+          <NavLinkItem key={link.path} {...link} />
         ))}
         <div className="relative" id="profileDropdown">
           <button
@@ -110,7 +150,7 @@ const Navbar = () => {
             </div>
             <div className="space-y-2">
               {navLinks.map((link) => (
-                <MobileNavLink key={link.to} {...link} onClick={() => setIsMobileMenuOpen(false)} />
+                <MobileNavLink key={link.path} {...link} onClick={() => setIsMobileMenuOpen(false)} />
               ))}
               <hr className="border-white/30 my-2" />
               <button

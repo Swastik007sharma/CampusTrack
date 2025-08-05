@@ -1,33 +1,28 @@
 import { Link } from 'react-router-dom';
 import { FaEdit, FaTrash, FaSearch, FaImage } from 'react-icons/fa';
 
-const ItemCard = ({
-  item,
-  onEdit,
-  onDelete,
-  showActions = true,
-  isEditing = false,
-  editFormData,
-  onEditChange,
-  onEditSubmit,
-  onCancelEdit,
-HEAD
-  onMarkAsReturned,
-  onGenerateOTP,
-  onVerifyOTP,
-  otp,
-  setOtp,
+const ItemCard = (props) => {
+  const {
+    item,
+    onEdit,
+    onDelete,
+    showActions = true,
+    isEditing = false,
+    editFormData,
+    onEditChange,
+    onEditSubmit,
+    onCancelEdit,
+    onMarkAsReturned,
+    onGenerateOTP,
+    onVerifyOTP,
+    otp,
+    setOtp
+  } = props;
 
-  onGenerateOTP,    // New prop for generating OTP
-  onVerifyOTP,      // New prop for verifying OTP
-  otp,              // OTP value
-  setOtp,           // Function to update OTP
- 
-}) => {
   return (
     <div className="rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] group" style={{ background: 'var(--color-secondary)', borderColor: 'var(--color-secondary)' }}>
       <div className="relative w-full h-48 sm:h-56 md:h-64 bg-gray-100 rounded-t-xl overflow-hidden">
-        {item.image ? (
+        {item?.image ? (
           <img
             src={item.image}
             alt={item.title}
@@ -78,7 +73,7 @@ HEAD
             <input
               type="text"
               name="title"
-              value={editFormData.title}
+              value={editFormData?.title || ''}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base"
               style={{
@@ -90,7 +85,7 @@ HEAD
             />
             <textarea
               name="description"
-              value={editFormData.description}
+              value={editFormData?.description || ''}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base h-20"
               style={{
@@ -102,7 +97,7 @@ HEAD
             />
             <select
               name="status"
-              value={editFormData.status}
+              value={editFormData?.status || ''}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base"
               style={{
@@ -120,7 +115,7 @@ HEAD
             <input
               type="text"
               name="category"
-              value={editFormData.category}
+              value={editFormData?.category || ''}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base"
               style={{
@@ -133,7 +128,7 @@ HEAD
             <input
               type="text"
               name="location"
-              value={editFormData.location}
+              value={editFormData?.location || ''}
               onChange={onEditChange}
               className="w-full p-2 border rounded-md text-sm sm:text-base"
               style={{
@@ -173,27 +168,27 @@ HEAD
       ) : (
         <div className="p-4 sm:p-5">
           <h3 className="text-lg sm:text-xl font-semibold mb-2 line-clamp-2" style={{ color: 'var(--color-text)' }}>
-            {item.title}
+            {item?.title}
           </h3>
           <div className="text-sm sm:text-base space-y-2 mb-4" style={{ color: 'var(--color-text)' }}>
             <p>
               <span className="font-medium" style={{ color: 'var(--color-text)' }}>Status:</span>{' '}
-              <span className={`status-badge ${item.status?.toLowerCase()}`}>
-                {item.status}
+              <span className={`status-badge ${item?.status?.toLowerCase()}`}>
+                {item?.status}
               </span>
             </p>
             <p>
               <span className="font-medium" style={{ color: 'var(--color-text)' }}>Category:</span>{' '}
-              {item.category?.name || 'N/A'}
+              {item?.category?.name || 'N/A'}
             </p>
             <p>
               <span className="font-medium" style={{ color: 'var(--color-text)' }}>Posted On:</span>{' '}
-              {new Date(item.createdAt).toLocaleDateString()}
+              {item?.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'N/A'}
             </p>
           </div>
           <div className="mt-4 flex flex-col gap-2">
             <Link
-              to={`/items/${item._id}`}
+              to={`/items/${item?._id}`}
               className="text-center py-2 px-4 rounded-md transition-colors duration-200"
               style={{
                 background: 'var(--color-primary)',
@@ -203,17 +198,16 @@ HEAD
               View Details →
             </Link>
 
-            {/* ✅ New conditional buttons based on status */}
             {showActions && (
               <>
-                {item.status === 'Lost' && (
+                {item?.status === 'Lost' && (
                   <button
                     className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition-colors text-sm w-full"
                   >
                     Found It?
                   </button>
                 )}
-                {item.status === 'Found' && (
+                {item?.status === 'Found' && (
                   <button
                     className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition-colors text-sm w-full"
                   >
@@ -223,7 +217,7 @@ HEAD
               </>
             )}
 
-            {item.status === 'Claimed' && showActions && (
+            {item?.status === 'Claimed' && showActions && (
               <div className="flex flex-col gap-2">
                 <button
                   onClick={onGenerateOTP}
@@ -235,8 +229,8 @@ HEAD
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
+                      value={otp || ''}
+                      onChange={(e) => setOtp && setOtp(e.target.value)}
                       placeholder="Enter OTP"
                       className="w-full p-2 border rounded-md text-sm"
                       style={{
