@@ -45,7 +45,7 @@ exports.register = async (req, res) => {
         await existingUser.save();
 
         // Generate initial OTP for reactivation
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const otp = crypto.randomInt(100000, 1000000).toString();
         const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
         existingUser.resetPasswordOtp = otp;
         existingUser.resetPasswordOtpExpiresAt = otpExpiresAt;
@@ -71,7 +71,7 @@ exports.register = async (req, res) => {
     await user.save();
 
     // Generate initial OTP for new registration
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = crypto.randomInt(100000, 1000000).toString();
     const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
     user.resetPasswordOtp = otp;
     user.resetPasswordOtpExpiresAt = otpExpiresAt;
