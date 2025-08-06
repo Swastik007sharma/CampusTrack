@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 const sendEmail = require('../utils/sendEmail');
 require('dotenv').config();
-
+const crypto = require('crypto');
 // Register a new user or reactivate a deactivated account
 exports.register = async (req, res) => {
   try {
@@ -138,8 +138,8 @@ exports.forgotPassword = async (req, res) => {
       return res.status(404).json({ message: 'User not found', code: 'USER_NOT_FOUND' });
     }
 
-    // Generate a 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    // Generate a 6-digit OTP (cryptographically secure)
+    const otp = crypto.randomInt(100000, 1000000).toString();
 
     // Set OTP expiration (10 minutes from now)
     const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
