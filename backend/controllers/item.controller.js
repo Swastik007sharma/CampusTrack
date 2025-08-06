@@ -2,6 +2,7 @@ const { z } = require('zod');
 const Item = require('../models/item.model');
 const cloudinary = require('../config/cloudinary');
 const fs = require('fs').promises;
+const path = require('path');
 const { createItemSchema, updateItemSchema } = require('../schema/item.schema');
 const QRCode = require('qrcode');
 const otpGenerator = require('otp-generator');
@@ -73,7 +74,14 @@ exports.createItem = async (req, res) => {
         console.error('Cloudinary upload error:', cloudinaryError.message);
         return res.status(500).json({ message: 'Failed to upload image to Cloudinary', code: 'CLOUDINARY_ERROR', details: cloudinaryError.message });
       } finally {
-        await fs.unlink(filePath).catch((err) => console.error('Failed to delete temp file:', err));
+        // Only delete files within the upload directory
+        const UPLOAD_DIR = path.resolve(__dirname, '../../uploads'); // adjust as needed
+        const resolvedPath = path.resolve(filePath);
+        if (resolvedPath.startsWith(UPLOAD_DIR)) {
+          await fs.unlink(resolvedPath).catch((err) => console.error('Failed to delete temp file:', err));
+        } else {
+          console.error('Attempted to delete file outside of upload directory:', resolvedPath);
+        }
       }
     }
 
