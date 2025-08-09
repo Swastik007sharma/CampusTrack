@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Github,
     Linkedin,
@@ -43,7 +42,7 @@ const Footer = () => {
         {
             title: "Navigation",
             links: [
-                { name: "Home", href: "/", icon: Mic },
+                { name: "Home", href: "/home", icon: Mic },
                 { name: "Notifications", href: "/notifications", icon: Bell },
                 { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
             ],
@@ -53,7 +52,7 @@ const Footer = () => {
             links: [
                 { name: "Privacy Policy", href: "/privacy-policy", icon: Lock },
                 { name: "Terms & Conditions", href: "/terms-and-conditions", icon: FileText },
-                { name: "Contact", href: "/contact", icon: Mail },
+                { name: "Contact", href: "mailto:project.k3925@gmail.com", icon: Mail },
             ],
         },
     ];
