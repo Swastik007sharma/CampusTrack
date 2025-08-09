@@ -39,7 +39,7 @@ function Login() {
       localStorage.setItem('token', response.data.authorization);
       console.log('Login successful, token:', response.data.authorization);
       toast.success('Login successful!');
-      setTimeout(() => navigate('/'), 300);
+      setTimeout(() => navigate('/home'), 300);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Login failed. Please check your credentials.');
     } finally {
