@@ -6,7 +6,7 @@ import { getCategories } from '../services/categoryService';
 import { Link, useOutletContext } from 'react-router-dom';
 import ItemCard from '../components/ItemCard';
 import Pagination from '../components/common/Pagination';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function UserDashboard() {
@@ -35,7 +35,7 @@ function UserDashboard() {
   const limit = 10;
 
   // Ref to track shown toasts
-  const shownToasts = useRef(new Set());
+  // const shownToasts = useRef(new Set());
   const fetchTimeoutRef = useRef(null);
 
   // Fetch categories
@@ -270,13 +270,6 @@ function UserDashboard() {
               style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
             >
               Profile
-            </Link>
-            <Link
-              to="/messages"
-              className="py-1 sm:py-2 px-2 sm:px-3 md:px-4 rounded-md transition-colors duration-200 text-xs sm:text-sm md:text-base font-medium shadow-md hover:shadow-lg w-full sm:w-auto text-center"
-              style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
-            >
-              Messages
             </Link>
             <Link
               to="/notifications"

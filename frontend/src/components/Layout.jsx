@@ -6,7 +6,7 @@ import NotificationsBar from './common/NotificationsBar';
 import Footer from './Footer';
 
 function Layout() {
-  const { user, addNotification, removeNotification, notifications, socket } = useContext(AuthContext);
+  const { user, addNotification, socket } = useContext(AuthContext);
 
   useEffect(() => {
     if (!socket || !user) return;
