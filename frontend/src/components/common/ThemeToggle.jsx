@@ -1,23 +1,49 @@
-import React from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import React from 'react'
+import { FiSun, FiMoon } from 'react-icons/fi'
+import { useTheme } from '../../context/ThemeContext'
 
 function ThemeToggle({ className = '' }) {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme()
+  const isDark = theme === 'dark'
+
   return (
     <button
       onClick={toggleTheme}
-      className={`px-3 py-2 rounded-full border-2 border-accent bg-white dark:bg-gray-800 shadow-md text-xl transition duration-200 hover:bg-accent hover:text-white dark:hover:bg-accent dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-accent md:min-w-[44px] md:min-h-[44px] min-w-[36px] min-h-[36px] z-10 relative ${className}`}
       aria-label="Toggle dark/light mode"
       title="Toggle dark/light mode"
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
+      className={`
+        relative flex items-center justify-center
+        w-10 h-10 rounded-full
+        bg-neutral-100 dark:bg-neutral-800
+        hover:bg-neutral-200 dark:hover:bg-neutral-700
+        transition-colors duration-300 ease-in-out
+        focus:outline-none focus:ring-2 focus:ring-accent
+        ${className}
+      `}
     >
-      {theme === 'dark' ? '🌙' : '☀️'}
+      <div className="relative w-5 h-5">
+        {/* Sun Icon */}
+        <FiSun
+          size={20}
+          className={`
+            absolute top-0 left-0
+            transition-all duration-300 ease-in-out
+            ${isDark ? 'opacity-0 scale-90' : 'opacity-100 scale-100 text-yellow-500'}
+          `}
+        />
+
+        {/* Moon Icon */}
+        <FiMoon
+          size={20}
+          className={`
+            absolute top-0 left-0
+            transition-all duration-300 ease-in-out
+            ${isDark ? 'opacity-100 scale-100 text-yellow-400' : 'opacity-0 scale-90'}
+          `}
+        />
+      </div>
     </button>
-  );
+  )
 }
 
-export default ThemeToggle;
+export default ThemeToggle
