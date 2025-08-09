@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 import { register } from '../../services/authService';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// Google Auth utilities
+import { initializeGoogleAuth, signInWithGoogle } from '../../lib/googleAuth';
 
 function Register() {
   const [name, setName] = useState('');
@@ -15,7 +18,13 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { login: setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Initialize Google Auth on component mount
+  useEffect(() => {
+    initializeGoogleAuth();
+  }, []);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
@@ -37,7 +46,7 @@ function Register() {
     }
 
     try {
-      const response = await register({ name, email, password, role: 'user' });
+      const response = await register({ name, email, password });
       console.log('Registration response:', response.data);
 
       // No token is generated yet; proceed to OTP verification
@@ -46,6 +55,47 @@ function Register() {
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.response?.data?.details?.[0]?.message || 'Registration failed. Please try again.';
       toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleRegister = async () => {
+    setLoading(true);
+    try {
+      const { user, accessToken } = await signInWithGoogle();
+      
+      console.log('Google user info:', user);
+      
+      // Send Google user data to backend for registration/login
+      const response = await fetch('http://localhost:5000/api/v1/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userData: {
+            name: user.name,
+            email: user.email,
+            profilePicture: user.picture,
+            googleId: user.id
+          }
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (data.authorization) {
+        setAuth(data.authorization, data.user || null);
+        localStorage.setItem('token', data.authorization);
+        toast.success('Google registration successful!');
+        navigate('/');
+      } else {
+        throw new Error('No authorization token received');
+      }
+    } catch (err) {
+      console.error('Google registration error:', err);
+      toast.error('Google registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -156,7 +206,26 @@ function Register() {
             </Button>
           </div>
         </form>
+
+
+        {/* Google Register Button */}
+        <div className="mt-4 animate-fade-in-left" style={{ animationDelay: '0.6s' }}>
+          <Button
+            onClick={handleGoogleRegister}
+            className={`w-full py-3 rounded-lg text-sm font-semibold border transition-all duration-200 shadow-md flex items-center justify-center ${
+              loading ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:shadow-lg'
+            }`}
+            disabled={loading}
+          >
+            <FaGoogle className="mr-2 text-red-500" />
+            {loading ? 'Please wait...' : 'Continue with Google'}
+          </Button>
+        </div>
+
+        <p className="mt-4 text-sm text-center text-gray-600 animate-fade-in-left" style={{ animationDelay: '0.7s' }}>
+
         <p className="mt-4 text-sm text-center animate-fade-in-left" style={{ animationDelay: '0.6s', color: 'var(--color-text)' }}>
+
           Already have an account?{' '}
           <a href="/login" className="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-200">
             Login here
