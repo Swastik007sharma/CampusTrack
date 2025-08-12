@@ -3,9 +3,10 @@ import Navbar from './Navbar';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import NotificationsBar from './common/NotificationsBar';
+import Footer from './Footer';
 
 function Layout() {
-  const { user, addNotification, removeNotification, notifications, socket } = useContext(AuthContext);
+  const { user, addNotification, socket } = useContext(AuthContext);
 
   useEffect(() => {
     if (!socket || !user) return;
@@ -33,11 +34,7 @@ function Layout() {
       <main className="flex-1 font-sans py-6 sm:py-8 px-4 sm:px-6 lg:px-8" style={{ background: 'var(--color-bg)', color: 'var(--color-text)' }}>
         <Outlet context={{ socket }} />
       </main>
-      <footer className="py-4" style={{ background: 'var(--color-navbar)', color: 'var(--color-text)' }}>
-        <div className="container mx-auto text-center">
-          <p className="text-sm">© 2025 Lost & Found. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
