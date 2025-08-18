@@ -7,7 +7,7 @@ A full-stack MERN-based Lost and Found management system built for college campu
 ## 📁 Project Structure
 
 ```
-📦Lost_And_Found
+📦CampusTrack
  ┣ 📂backend      ← Node.js Express API
  ┣ 📂frontend     ← React Vite frontend
  ┗ 📄docker-compose.yml
@@ -42,8 +42,8 @@ A full-stack MERN-based Lost and Found management system built for college campu
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Swastik007sharma/Lost_And_Found.git
-cd Lost_And_Found
+git clone https://github.com/Swastik007sharma/CampusTrack.git
+cd CampusTrack
 ```
 
 ---
