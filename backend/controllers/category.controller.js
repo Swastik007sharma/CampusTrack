@@ -7,7 +7,8 @@ exports.getCategories = async (req, res) => {
     const categories = await Category.find({ isActive: true })
       .sort({ name: 1 }) // Alphabetical order
       .skip((page - 1) * limit)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit))
+      .populate('subcategories');
     const total = await Category.countDocuments({ isActive: true });
     res.status(200).json({
       message: 'Categories fetched successfully',

@@ -47,25 +47,32 @@ exports.searchItems = async (req, res) => {
     const { page = 1, limit = 10, sortBy = 'createdAt', order = 'desc', search = '', status } = req.query;
     const skip = (page - 1) * limit;
 
-    // Build the aggregation pipeline
     const pipeline = [];
 
-    // Lookup to join with Category collection
+    // --- Lookup and Unwind Stages ---
+    // Look up and unwind Category
     pipeline.push({
       $lookup: {
-        from: 'categories', // Must match the collection name in MongoDB
+        from: 'categories',
         localField: 'category',
         foreignField: '_id',
         as: 'categoryData',
       },
     });
+    pipeline.push({ $unwind: '$categoryData' });
 
-    // Unwind the categoryData array (since it’s a single reference)
+    // Look up and unwind SubCategory
     pipeline.push({
-      $unwind: '$categoryData',
+      $lookup: {
+        from: 'subcategories', // Ensure this matches your collection name
+        localField: 'subCategory',
+        foreignField: '_id',
+        as: 'subCategoryData',
+      },
     });
+    pipeline.push({ $unwind: '$subCategoryData' });
 
-    // Lookup to join with User collection for postedBy
+    // Look up and unwind PostedBy
     pipeline.push({
       $lookup: {
         from: 'users',
@@ -74,64 +81,57 @@ exports.searchItems = async (req, res) => {
         as: 'postedByData',
       },
     });
+    pipeline.push({ $unwind: '$postedByData' });
 
-    // Unwind postedByData
-    pipeline.push({
-      $unwind: '$postedByData',
-    });
-
-    // Match stage for all conditions, including isActive: true and status
+    // --- Match Stage for Filtering ---
     const matchConditions = { isActive: true };
     if (status && status !== 'All' && ['Lost', 'Found', 'Claimed', 'Returned'].includes(status)) {
       matchConditions.status = status;
     }
     if (search) {
+      const searchRegex = { $regex: search, $options: 'i' };
       matchConditions.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { tags: { $regex: search, $options: 'i' } },
-        { location: { $regex: search, $options: 'i' } },
-        { 'categoryData.name': { $regex: search, $options: 'i' } },
+        { title: searchRegex },
+        { description: searchRegex },
+        { tags: searchRegex }, // Correctly searches an array of strings
+        { location: searchRegex },
+        { 'categoryData.name': searchRegex },
+        { 'subCategoryData.name': searchRegex }, // Search by subcategory name
       ];
     }
-    pipeline.push({
-      $match: matchConditions,
-    });
+    pipeline.push({ $match: matchConditions });
 
-    // Project to shape the output
+    // --- Pagination and Sorting Stages ---
+    // Count total documents before pagination
+    const countPipeline = [...pipeline, { $count: 'total' }];
+    const totalResultsAgg = await Item.aggregate(countPipeline);
+    const totalResults = totalResultsAgg.length > 0 ? totalResultsAgg[0].total : 0;
+    
+    // Sort, skip, and limit for fetching results
+    pipeline.push({ $sort: { [sortBy]: order === 'asc' ? 1 : -1 } });
+    pipeline.push({ $skip: skip });
+    pipeline.push({ $limit: parseInt(limit, 10) });
+    
+    // --- Final Project Stage ---
     pipeline.push({
       $project: {
-        id: '$_id',
+        _id: 1,
         title: 1,
         description: 1,
-        category: { id: '$categoryData._id', name: '$categoryData.name' },
+        category: { _id: '$categoryData._id', name: '$categoryData.name' },
+        subCategory: { _id: '$subCategoryData._id', name: '$subCategoryData.name' }, // Project subCategory data
         tags: 1,
         status: 1,
         location: 1,
         image: 1,
-        postedBy: { id: '$postedByData._id', name: '$postedByData.name', email: '$postedByData.email' },
+        postedBy: { _id: '$postedByData._id', name: '$postedByData.name', email: '$postedByData.email' },
         isActive: 1,
         createdAt: 1,
         updatedAt: 1,
       },
     });
 
-    // Sort stage
-    pipeline.push({
-      $sort: { [sortBy]: order === 'asc' ? 1 : -1 },
-    });
-
-    // Pagination stages
-    pipeline.push({ $skip: skip });
-    pipeline.push({ $limit: parseInt(limit, 10) });
-
-    // Execute the aggregation
     const items = await Item.aggregate(pipeline);
-
-    // Get total count for pagination
-    const totalResultsPipeline = pipeline.slice(0, pipeline.length - 2); // Remove skip and limit
-    const totalResultsAgg = await Item.aggregate([...totalResultsPipeline, { $count: 'total' }]);
-    const totalResults = totalResultsAgg.length > 0 ? totalResultsAgg[0].total : 0;
     const totalPages = Math.ceil(totalResults / limit);
 
     res.status(200).json({
@@ -144,7 +144,7 @@ exports.searchItems = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Error searching items:', error.message);
+    console.error('Error searching items:', error);
     res.status(500).json({ error: 'Failed to search items' });
   }
 };

@@ -21,6 +21,12 @@ const itemSchema = new Schema({
     required: [true, 'Category is required'],
     index: true,
   },
+  subCategory: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'SubCategory',
+    required: [true, 'Sub Category is required'],
+    index: true,
+  },
   tags: [{
     type: String,
     validate: {

@@ -10,6 +10,7 @@ const Notification = require('../models/notification.model');
 const User = require('../models/user.model');
 const sendEmail = require('../utils/sendEmail');
 const Category = require('../models/category.model');
+const SubCategory = require('../models/subCategory.model');
 
 // Validation schemas for query parameters and body
 const querySchema = z.object({
@@ -60,7 +61,7 @@ exports.createItem = async (req, res) => {
     console.log('Request file:', req.file);
 
     const validatedData = createItemSchema.parse(req.body);
-    const { title, description, category, tags, status, location } = validatedData;
+    const { title, description, subCategory, category, tags, status, location } = validatedData;
     let imageUrl = null;
 
     if (req.file) {
@@ -89,11 +90,16 @@ exports.createItem = async (req, res) => {
     if (!categoryDoc) {
       return res.status(400).json({ message: `Category '${category}' not found`, code: 'INVALID_CATEGORY' });
     }
+    const subcategoryDoc = await SubCategory.findOne({ name: subCategory, isActive: true });
+    if (!subcategoryDoc) {
+      return res.status(400).json({ message: `Category '${subCategory}' not found`, code: 'INVALID_CATEGORY' });
+    }
 
     const newItem = new Item({
       title,
       description,
       category: categoryDoc._id,
+      subCategory: subcategoryDoc._id,
       tags,
       status,
       location,
@@ -119,25 +125,44 @@ exports.getItems = async (req, res) => {
     const validatedQuery = querySchema.parse(req.query);
     const { page, limit, sortBy, order, search } = validatedQuery;
 
-    const query = { isActive: true };
-    if (search) {
-      query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { tags: { $regex: search, $options: 'i' } },
-      ];
-    }
+    const buildSearchQuery = async () => {
+      const query = { isActive: true };
+      const searchRegex = new RegExp(search, 'i');
 
-    const items = await Item.find(query)
+      if (search) {
+        // Find categories whose names match the search term
+        const categories = await Category.find({ name: { $regex: searchRegex } }).select('_id');
+        const categoryIds = categories.map(cat => cat._id);
+
+        // Find subcategories whose names match the search term
+        const subcategories = await SubCategory.find({ name: { $regex: searchRegex } }).select('_id');
+        const subcategoryIds = subcategories.map(subcat => subcat._id);
+
+        // Use the found IDs to build the main query
+        query.$or = [
+          { title: { $regex: searchRegex } },
+          { description: { $regex: searchRegex } },
+          { tags: { $regex: searchRegex } },
+          { category: { $in: categoryIds } },
+          { subCategory: { $in: subcategoryIds } },
+        ];
+      }
+      return query;
+    };
+
+    const finalQuery = await buildSearchQuery();
+
+    const items = await Item.find(finalQuery)
       .populate('postedBy', 'name email')
       .populate('category', 'name')
+      .populate('subCategory', 'name')
       .populate('keeper', 'name')
       .populate('claimedBy', 'name')
       .sort({ [sortBy]: order === 'asc' ? 1 : -1 })
       .limit(limit)
       .skip((page - 1) * limit);
 
-    const totalItems = await Item.countDocuments(query);
+    const totalItems = await Item.countDocuments(finalQuery);
 
     const transformedItems = items.map(item => ({
       ...item.toObject(),
@@ -173,6 +198,7 @@ exports.getItemById = async (req, res) => {
     const item = await Item.findOne({ _id: id, isActive: true })
       .populate('postedBy', 'name email')
       .populate('category', 'name')
+      .populate('subCategory', 'name')
       .populate('keeper', 'name')
       .populate('claimedBy', 'name');
 
@@ -240,6 +266,7 @@ exports.updateItem = async (req, res) => {
     item.title = updateData.title || item.title;
     item.description = updateData.description || item.description;
     item.category = updateData.category ? (await Category.findOne({ name: updateData.category, isActive: true }))?._id : item.category;
+    item.Subcategory = updateData.Subcategory ? (await Subcategory.findOne({ name: updateData.Subcategory, isActive: true }))?._id : item.category;
     item.tags = updateData.tags || item.tags;
     item.status = updateData.status || item.status;
     item.location = updateData.location || item.location;

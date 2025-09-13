@@ -36,7 +36,7 @@ function Home() {
           setItems([]);
           setTotalPages(1);
         }
-      } catch (err) {
+      } catch {
         toast.error('Failed to load items. Please try again later.');
         setItems([]);
         setTotalPages(1);
@@ -49,7 +49,8 @@ function Home() {
 
   useEffect(() => {
     // Clear error on unmount or change (for potential alerts)
-    return () => clearTimeout(alertTimeout.current);
+    const timeoutId = alertTimeout.current;
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const handleSearch = (e) => {
