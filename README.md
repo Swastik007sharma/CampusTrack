@@ -4,6 +4,12 @@ A full-stack MERN-based Lost and Found management system built for college campu
 
 ---
 
+## ⚠️ Project Status: 
+
+This repository serves as the Open Source foundation for CampusTrack (GSSOC Edition). The active commercial version is currently under private development.
+
+---
+
 ## 📁 Project Structure
 
 ```
