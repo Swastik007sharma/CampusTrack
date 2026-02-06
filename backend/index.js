@@ -7,6 +7,8 @@ const path = require('path');
 const fs = require('fs');
 const seed = require('./utils/seedCategory');
 const initSocket = require('./utils/socket');
+const swaggerui = require('swagger-ui-express')
+const swaggerjsdocs = require('swagger-jsdoc')
 
 const { errorHandler } = require('./middlewares/error.middleware');
 const loggerMiddleware = require('./middlewares/logger.middleware');
@@ -53,6 +55,26 @@ app.get('/ws-test', (req, res) => {
 });
 
 app.use('/api/v1', mainRouter);
+
+const options = {
+  definition: {
+    openapi: '3.0.0', 
+    info: {
+      title: 'CampusTrack API docs',
+      description: 'A simple RESTful API documentation with Swagger'
+    },
+    servers: [
+      {
+        url: process.env.FRONTEND_URL || 'http://localhost:5000',
+      },
+    ],
+  },
+  apis: ['./routes/*.js'],
+}
+
+const specs = swaggerjsdocs(options)
+app.use('/api-docs', swaggerui.serve, swaggerui.setup(specs))
+
 app.use(notFound);
 app.use(errorHandler);
 
