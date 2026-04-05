@@ -1,8 +1,4 @@
 import {
-    Github,
-    Linkedin,
-    Instagram,
-    Twitter,
     Bell,
     LayoutDashboard,
     Mic,
@@ -10,6 +6,7 @@ import {
     Lock,
     Mail
 } from "lucide-react";
+import { FaGithub, FaLinkedin, FaInstagram, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -19,22 +16,22 @@ const Footer = () => {
         {
             name: "GitHub",
             href: "https://github.com/Swastik007sharma/CampusTrack",
-            icon: Github,
+            icon: FaGithub,
         },
         {
             name: "Instagram",
             href: "#",
-            icon: Instagram,
+            icon: FaInstagram,
         },
         {
             name: "Twitter",
             href: "#",
-            icon: Twitter,
+            icon: FaTwitter,
         },
         {
             name: "LinkedIn",
             href: "#",
-            icon: Linkedin,
+            icon: FaLinkedin,
         },
     ];
 
