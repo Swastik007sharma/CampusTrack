@@ -20,7 +20,7 @@
     "express-rate-limit": "^8.3.2",
     "he": "^1.2.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^8.23.0",
+    "mongoose": "^9.4.1",
     "mongoose-paginate-v2": "^1.9.4",
     "morgan": "^1.10.1",
     "multer": "^2.1.1",
