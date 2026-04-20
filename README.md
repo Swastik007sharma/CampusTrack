@@ -175,4 +175,4 @@ Made with ❤️ by [Swastik Sharma](https://github.com/Swastik007sharma)
 
 ## 📝 License
 
-MIT License
+This project is licensed under the [MIT License](License.md).
